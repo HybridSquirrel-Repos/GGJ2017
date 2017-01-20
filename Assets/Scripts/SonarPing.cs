@@ -22,6 +22,17 @@ public class SonarPing : MonoBehaviour {
 	}
 
 
+	void otherSonar(){
+		var me = Camera.main.transform;
+		for (var i = 0; i < 500; i++) {
+			var ray = new Ray(me.position, me.forward*0.1f + (Random.insideUnitSphere*0.13f));
+			Sonar.ShootRay (ray, sonarPointPrefab);
+		}
+
+		Debug.Log (Sonar.pointCount);
+	}
+
+
 	// Use this for initialization
 	void Start () {
 		
@@ -31,6 +42,10 @@ public class SonarPing : MonoBehaviour {
 	void Update () {
 		if (Input.GetMouseButton(0)) {
 			sonar ();
+		}
+
+		if (Input.GetMouseButton(1)) {
+			otherSonar ();
 		}
 	}
 }
