@@ -10,14 +10,22 @@ public class SonarPointFadeIn : MonoBehaviour {
 	float disappearChance;
 	float lastDissapearRoll=0;
 
+
+	Vector3 rotationDirection;
+
 	// Use this for initialization
 	void Start () {
-		disappearChance = Random.Range (0.03f, 0.6f);
+		disappearChance = Random.Range (0.02f, 0.5f);
 		lastDissapearRoll = Time.time + Random.Range(0f, 1f);
+		rotationDirection = Random.insideUnitSphere * 100f;
 	}
 	
 	// Update is called once per frame
 	void Update () {
+
+
+		transform.Rotate (rotationDirection * Time.deltaTime);
+
 		fadeInTimeout -= speed*Time.deltaTime;
 		if (fadeInTimeout < 0f) {
 			this.GetComponent<MeshRenderer> ().enabled = true;
