@@ -16,10 +16,18 @@ public class SonarPing : MonoBehaviour {
 			for (var y = 0; y < Camera.main.pixelHeight; y += 20) {
 				var ray = Camera.main.ScreenPointToRay (new Vector3 (x, y, 0f));
 				if (Physics.Raycast (ray, out hit)) {
+					//HIT OBJECT, SPAWN A SONAR POINT
 					var sonarPoint = GameObject.Instantiate (sonarPointPrefab, hit.point, Quaternion.identity);
-					sonarPoint.GetComponent<SonarPointFadeIn> ().timeout = hit.distance;
-					sonarPoint.transform.rotation = Quaternion.LookRotation (hit.normal);
-					Debug.DrawRay (hit.point, hit.normal*0.1f, Color.magenta, 5f);
+					sonarPoint.GetComponent<SonarPointFadeIn> ().fadeInTimeout = hit.distance;
+					sonarPoint.GetComponent<MeshRenderer> ().material = hit.collider.gameObject.GetComponent<SonarResponder> ().mat;
+
+					//this should be in the SONAR POINT script
+					sonarPoint.transform.rotation = Random.rotation;
+					var scale = Random.Range (0.5f, 1.5f);
+					sonarPoint.transform.localScale *= scale;
+
+					//DEBUGGING ONLY
+					//Debug.DrawRay (hit.point, hit.normal*0.1f, Color.magenta, 5f);
 					pointCount++;
 				}
 			}
