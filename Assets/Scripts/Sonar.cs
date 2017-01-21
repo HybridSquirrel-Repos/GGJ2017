@@ -41,9 +41,9 @@ public class Sonar : MonoBehaviour {
 	}
 
 
-	public static void ShootRay(Ray ray, GameObject sonarPointPrefab){
+	public static void ShootRay(Ray ray, GameObject sonarPointPrefab, float volume = 4){
 		RaycastHit hit;
-		if (Physics.Raycast (ray, out hit)) {
+		if (Physics.Raycast (ray, out hit, volume)) {
 			//HIT OBJECT, SPAWN A SONAR POINT
 			var sonarResponder = hit.collider.gameObject.GetComponent<SonarResponder> ();
 			if (sonarResponder != null && hit.collider.tag != "Enemy") {

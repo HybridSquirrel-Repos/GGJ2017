@@ -23,6 +23,7 @@ public class Noise
 	public Noise(Vector3 origin, float volume)
 	{
 		MakeNoise (origin, volume);
+
 	}
 
 	/* Make a new noise, reseting everything */
@@ -31,19 +32,36 @@ public class Noise
 		this.origin = origin;
 		this.volume = volume;
 		this.timeStamp = Time.time;
-	}
+        foreach (var ai in PlayerBotDisturber.ai_list) {
+            if (Vector3.Distance(origin, ai.transform.position) * 1.25f <= volume)
+                ai.heard_noises.Add(this);
+        }
+    }
 
+    /// <summary>
+    /// Get how priortiezed this noise should be for the bot.
+    /// </summary>
+    /// <param name="from">Where the bot is. </param>
+    /// <returns>Priority</returns>
+    public float CalcPriority(Vector3 from)
+    {
+        float distance = Vector3.Distance(this.origin, from);
+        float timeDiff = Time.time - this.timeStamp;
 
-	/* Distance from an object to the edge of the noise radius */
-	public float DistanceToNoiseFrom(Vector3 point)
-	{
-		float distance = Vector3.Distance (this.origin, point);
-		float timeDiff = Time.time - this.timeStamp;
+        float decayedNoise = this.volume - timeDiff * DECAY_RATE;
+        return distance - (decayedNoise * NOISE_RADIUS_MULTIPLIER);
+    }
 
-		float decayedNoise = this.volume - timeDiff * DECAY_RATE;
-		return distance - (decayedNoise * NOISE_RADIUS_MULTIPLIER);
-	}
+    /*static void DoNoise(Vector3 from, float volume)
+    {
+        var noise = new Noise(from, volume);
 
+        for (var i = 0; i < 3600; i++)
+        {
+            var ray = new Ray(this.transform.position, Random.insideUnitSphere);
+            Sonar.ShootRay(ray, sonarPointPrefab);
+        }
 
+    }*/
 
 }

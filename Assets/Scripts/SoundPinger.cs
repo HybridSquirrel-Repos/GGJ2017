@@ -6,6 +6,7 @@ public class SoundPinger : MonoBehaviour {
 
 	float lastPing;
 	public GameObject sonarPointPrefab;
+    public float volume = 4;
 
 	// Use this for initialization
 	void Start () {
@@ -19,9 +20,11 @@ public class SoundPinger : MonoBehaviour {
 
 			for (var i = 0; i < 3600; i++) {
 				var ray = new Ray (this.transform.position, Random.insideUnitSphere);
-				Sonar.ShootRay (ray, sonarPointPrefab);
+				Sonar.ShootRay (ray, sonarPointPrefab, volume);
 			}
 
-		}
+            var noise = new Noise(this.transform.position, volume);
+
+        }
 	}
 }

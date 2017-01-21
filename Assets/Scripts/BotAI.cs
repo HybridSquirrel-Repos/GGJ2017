@@ -18,6 +18,7 @@ public class BotAI : MonoBehaviour {
     public int points_index = 0;
     public GuardBehaviour guard_behaviour = GuardBehaviour.STILL;
     public double time_until_next_point = 3f;
+    public List<Noise> heard_noises = new List<Noise>();
 
     // Is > 1 if the bot is chasing a player. //
     public double chasing = 0;
@@ -188,6 +189,14 @@ public class BotAI : MonoBehaviour {
         awareness_of_player += amount;
     }
 
+    /*void TryFollowNoise()
+    {
+        Noise most_important
+        foreach (var noise in heard_noises) {
+            noise.CalcPriority(transform.position);
+        }
+    }*/
+
 	void Update ()
     {
         if (awareness_of_player >= 100) {
@@ -195,6 +204,10 @@ public class BotAI : MonoBehaviour {
             awareness_of_player = 0;
             temporary_idle = 0;
         }
-        DoMovement();   
+        DoMovement();
+
+        if (Random.Range(0.1f, 1f) > 0.2f) {
+            TryFollowNoise();
+        }
 	}
 }

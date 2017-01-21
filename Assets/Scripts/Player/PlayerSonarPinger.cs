@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class SonarPing : MonoBehaviour {
+public class PlayerSonarPinger : MonoBehaviour {
 
 	public GameObject sonarPointPrefab;
 
@@ -13,13 +13,18 @@ public class SonarPing : MonoBehaviour {
 	void sonar(int count){
 		var me = Camera.main.transform;
 
-		//Debug.Log (count);
+        //Debug.Log (count);
+
+        float volume = 4;
+
 
 		for (var i = 0; i < count; i++) {
 			var ray = new Ray(me.position, me.forward*0.1f + (Random.insideUnitSphere*0.13f));
-			Sonar.ShootRay (ray, sonarPointPrefab);
+			Sonar.ShootRay (ray, sonarPointPrefab, volume);
 		}
-	}
+
+        var noise = new Noise(me.position, volume);
+    }
 
 
 	// Use this for initialization
