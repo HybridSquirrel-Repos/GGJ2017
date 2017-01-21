@@ -10,7 +10,7 @@ public class Sonar : MonoBehaviour {
 	public static int pointCount;
 
 	public static int MAX_POINTS = 25000;
-	public static int MAP_SIZE_X = 105;
+	public static int MAP_SIZE_X = 105; 
 	public static int MAP_SIZE_Y = 105;
 	public static int MAP_SIZE_Z = 105;
 	public static int MAX_CUBE_POINTS = 100;
@@ -59,8 +59,10 @@ public class Sonar : MonoBehaviour {
 				GameObject sonarPoint = GameObject.Instantiate (sonarPointPrefab, hit.point, Quaternion.identity);
 				sonarPoint.GetComponent<SonarPointFadeIn> ().fadeInTimeout = hit.distance;
 				print (SignedAngleBetween (hit.normal, Vector3.up, Vector3.up));
-				float c = SignedAngleBetween (hit.normal, Vector3.up, Vector3.up) / 90;
-				Color color = new Color (1, 1-c, 1-c);
+				float r = SignedAngleBetween (hit.normal, Vector3.up, Vector3.up) / 90;
+				float g = SignedAngleBetween (hit.normal, Vector3.left, Vector3.up) / 90;
+				float b = SignedAngleBetween (hit.normal, Vector3.right, Vector3.up) / 90;
+				Color color = new Color (1-r, 1-g, 1-b);
 
 
 				//Debug.DrawRay (hit.point, hit.normal, Color.blue, 10f);
