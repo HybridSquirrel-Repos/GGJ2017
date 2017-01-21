@@ -22,7 +22,7 @@ public class Sonar : MonoBehaviour {
 		if (Physics.Raycast (ray, out hit)) {
 			//HIT OBJECT, SPAWN A SONAR POINT
 			var sonarResponder = hit.collider.gameObject.GetComponent<SonarResponder> ();
-			if (sonarResponder != null) {
+			if (sonarResponder != null && hit.collider.tag != "Enemy") {
 				var sonarPoint = GameObject.Instantiate (sonarPointPrefab, hit.point, Quaternion.identity);
 				sonarPoint.GetComponent<SonarPointFadeIn> ().fadeInTimeout = hit.distance;
 				sonarPoint.GetComponent<MeshRenderer> ().material = hit.collider.gameObject.GetComponent<SonarResponder> ().mat;
@@ -34,6 +34,14 @@ public class Sonar : MonoBehaviour {
 
 				//DEBUGGING ONLY
 				pointCount++;
+			} else if (hit.collider.tag == "Enemy")
+			{
+				// Get the render object of the enemy
+				/*Debug.Log ("Enemy Created");
+				GameObject renderEnemy = hit.collider.transform.GetChild (0).gameObject;
+				GameObject copy = GameObject.Instantiate (renderEnemy, renderEnemy.transform.position, Quaternion.identity);
+				copy.GetComponent <Renderer> ().enabled = true;*/
+				hit.collider.GetComponent <Object_Clone> ().Clone ();
 			}
 		}
 		//more debugging
