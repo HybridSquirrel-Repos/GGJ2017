@@ -31,30 +31,29 @@ public class PlayerSonarPinger : MonoBehaviour
             new Noise(source.position, volume);
     }
 
-
-    // Use this for initialization
-    void Start()
-    {
-        mic = gameObject.transform.parent.GetComponentInChildren<Microphone_Input>();
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        var volume = mic.GetAveragedVolume();
-        if (volume < 0.2f)
-            volume = 0f;
-        sonar(sonarPointPrefab, (int)(volume * 1000f), volume * 200f);
+	// Use this for initialization
+	void Start () {
+		mic = gameObject.transform.parent.GetComponentInChildren<Microphone_Input> ();
+	}
+	
+	// Update is called once per frame
+	void Update () {
+		var volume = mic.GetAveragedVolume ();
+		if (volume < 0.2f)
+			volume = 0f;
+		sonar (sonarPointPrefab, (int)(volume * 500f), volume*200f);
 
 
         if (Input.GetMouseButton(0))
         {
             sonar(sonarPointPrefab, (int)(3000f * Time.deltaTime), 25f);
         }
-
-        if (Input.GetMouseButton(1))
-        {
-            sonar(sonarPointPrefab, (int)(500f * Time.deltaTime), 15f);
-        }
-    }
+		if (Input.GetMouseButton (1)) {
+			sonar (sonarPointPrefab, (int)(500f*Time.deltaTime),15f);
+		}
+		if (Input.GetKeyDown (KeyCode.Y))
+		{
+			sonar (sonarPointPrefab, 1);
+		}
+	}
 }
