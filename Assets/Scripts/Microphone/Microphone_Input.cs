@@ -28,7 +28,7 @@ public class Microphone_Input : MonoBehaviour {
 			
 		
 
-	
+
 	}
 
 	public float GetAveragedVolume()
