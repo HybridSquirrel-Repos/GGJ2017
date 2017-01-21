@@ -80,6 +80,9 @@ public class BotAI : MonoBehaviour {
 			Vector3 size = new Vector3 (Mathf.Abs (pos1.x - pos2.x), 0.01f, Mathf.Abs (pos1.z - pos2.z));
 			Gizmos.color = new Color (1, 0, 1, 0.5f);
 			Gizmos.DrawCube (center, size);
+
+			Gizmos.color = Color.red;
+			Gizmos.DrawSphere (area_destination, 0.5f);
 		}
     }
 
@@ -120,20 +123,23 @@ public class BotAI : MonoBehaviour {
                     if (Vector3.Distance(transform.position, area_destination) < 1) {
                         temporary_idle = time_until_next_point;
                         GetNewAreaDest();
-                        old_behaviour = GuardBehaviour.STILL;
+                        //old_behaviour = GuardBehaviour.STILL;
+						agent.SetDestination (area_destination);
+						
                     }
                     if (old_behaviour != guard_behaviour) {
                         old_behaviour = guard_behaviour;
                         agent.SetDestination(area_destination);
                     }
-                        break;
-            }
+                    break;
+	            }
     }
 
     void GetNewAreaDest() {
         area_destination = new Vector3( Random.Range(position_points[0].position.x, position_points[1].position.x),
                                         Random.Range(position_points[0].position.y, position_points[1].position.y),
                                         Random.Range(position_points[0].position.z, position_points[1].position.z));
+		Debug.Log (area_destination);
 
     }
 
