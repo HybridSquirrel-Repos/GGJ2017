@@ -30,6 +30,12 @@ public class FootstepSoundCaster : MonoBehaviour {
 					Debug.DrawRay (Camera.main.transform.position, Camera.main.transform.forward, Color.green, 5f);
 					Sonar.ShootRay (ray, sonarPointPrefab, 4f);
 				}
+
+                if (Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift))
+                    new Noise(transform.position, 10);
+                else
+                    new Noise(transform.position, 5);
+
 			}
 		}else{
 			armed = true;

@@ -14,13 +14,16 @@ public class BotAI : MonoBehaviour {
         POINT2POINT
     }
 
+    public float roam_speed = 0.5f;
+    public float charge_speed = 4;
+
+
     public Transform[] position_points;
     public int points_index = 0;
 
     public GuardBehaviour guard_behaviour = GuardBehaviour.STILL;
 
-
-    public double time_until_next_point = 3f;
+    public float time_until_next_point = 3f;
     public List<Noise> heard_noises = new List<Noise>();
 
 
@@ -32,9 +35,11 @@ public class BotAI : MonoBehaviour {
     public double awareness_of_player = 0;
 
     // How long the entity will be standing still. //
-    public double temporary_idle = 0;
+    public float temporary_idle = 0;
 
     public double chase_determination = 7f;
+
+    public AudioClip sound_screech;
 
     // Caches & private data. //
     private Rigidbody rigidbody;
@@ -43,6 +48,8 @@ public class BotAI : MonoBehaviour {
 	private Vector3 area_destination = new Vector3(-1, -1, -1);
     private Noise goto_noise = null;
     private int goto_noise_key;
+    public GameObject sonarPointPrefab;
+    private Object_Clone clone;
 
 	/// <summary>
 	/// If we are waiting to move to the next position (AREA only)
@@ -55,9 +62,11 @@ public class BotAI : MonoBehaviour {
     void Start()
     {
 
+        //sonarPointPrefab.
         PlayerBotDisturber.ai_list.Add(this);
         rigidbody = GetComponent<Rigidbody>();
         agent = GetComponent<NavMeshAgent>();
+        clone = GetComponent<Object_Clone>();
 
         player = GameObject.FindGameObjectWithTag("Player");
 
@@ -121,15 +130,17 @@ public class BotAI : MonoBehaviour {
             return;
         }
         agent.enabled = true;
-
+        agent.speed = roam_speed;
         if (chasing > 0)
         {
+            agent.speed = charge_speed;
             agent.SetDestination(player.transform.position);
-            chasing -= Time.deltaTime;
+            chasing -= Time.deltaTime; 
         }
 
         else if (goto_noise != null)
         {
+            agent.speed = charge_speed;
             agent.SetDestination(heard_noises[goto_noise_key].origin);
             agent.SetDestination(goto_noise.origin);
             Debug.Log("GOTO:ing");
@@ -189,12 +200,18 @@ public class BotAI : MonoBehaviour {
                         waiting = true;
                         temporary_idle = time_until_next_point;
                         area_destination = -Vector3.one;
+                        Invoke("BeginMovementCycle", time_until_next_point + 0.1f);
 
                     }
 
                     break;
             }
         }
+    }
+
+    void BeginMovementCycle()
+    {
+        waiting = true;
     }
 
     void GetNewAreaDest() {
@@ -259,6 +276,11 @@ public class BotAI : MonoBehaviour {
 
 	void Update ()
     {
+
+        if (Vector3.Distance(transform.position, player.transform.position) < 1) {
+            Debug.LogError("GAME OVER!");
+        }
+
         if (awareness_of_player >= 100) {
             chasing = chase_determination;
             awareness_of_player = 0;
@@ -266,12 +288,19 @@ public class BotAI : MonoBehaviour {
         }
         if (goto_noise == null)
         {
-            if (Random.Range(0.1f, 1f) > 0.2f)
+            if (Random.Range(0.1f, 100f) > 0.5f)
             {
                 TryFollowNoise();
             }
         }
 
+        if (Random.Range(0.0f, 1000f) * Time.deltaTime < 0.02f)
+        {
+            PlayerSonarPinger.sonar(sonarPointPrefab, transform, 50, 2);
+            AudioSource.PlayClipAtPoint(sound_screech, transform.position);
+            clone.Clone();
+            Debug.Log("Rawr");
+        }
 
         DoMovement();
 

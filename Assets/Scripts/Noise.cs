@@ -11,7 +11,7 @@ public class Noise
 	/* Multiplier from the noise to in game units */
 	const float NOISE_RADIUS_MULTIPLIER = 1;
 
-    const float AI_HEARING = 4f;
+    const float AI_HEARING = 1.25f;
 
 	/* Where the noise was made */
 	public Vector3 origin;
@@ -36,7 +36,7 @@ public class Noise
 		this.volume = volume;
 		this.timeStamp = Time.time;
         foreach (var ai in PlayerBotDisturber.ai_list) {
-            if (Vector3.Distance(origin, ai.transform.position) <= volume * AI_HEARING)
+            if (volume * AI_HEARING >= Vector3.Distance(origin, ai.transform.position))
                 ai.heard_noises.Add(this);
         }
     }
