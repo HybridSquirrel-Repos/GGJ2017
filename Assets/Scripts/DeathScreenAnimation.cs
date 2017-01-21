@@ -21,10 +21,10 @@ public class DeathScreenAnimation : MonoBehaviour
 
 	public void Play()
 	{
-		playing = true;
-		foreach (GameObject point in GameObject.FindGameObjectsWithTag ("SonarPoint"))
-		{
-			point.GetComponent <SonarPointFadeIn> ().goal = transform.position;
-		}
+//		playing = true;
+//		foreach (GameObject point in GameObject.FindGameObjectsWithTag ("SonarPoint"))
+//		{
+//			point.GetComponent <SonarPointFadeIn> ().goal = transform.position;
+//		}
 	}
 }
