@@ -4,10 +4,11 @@ using UnityEngine;
 
 public class TetrahedralFactory : MonoBehaviour
 {
-    public static Mesh mesh = new Mesh();
+    public static Mesh mesh;
 
     void Start()
     {
+        mesh = new Mesh();
         Vector3 p0 = new Vector3(0, 0, 0);
         Vector3 p1 = new Vector3(1, 0, 0);
         Vector3 p2 = new Vector3(0.5f, 0, Mathf.Sqrt(0.75f));
