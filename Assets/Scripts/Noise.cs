@@ -2,13 +2,16 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+[System.Serializable]
 public class Noise 
 {
 	/* Decay per second */
-	const float DECAY_RATE = 10;
+	public const float DECAY_AFTER = 4.5f;
 
 	/* Multiplier from the noise to in game units */
-	const float NOISE_RADIUS_MULTIPLIER = 10;
+	const float NOISE_RADIUS_MULTIPLIER = 1;
+
+    const float AI_HEARING = 4f;
 
 	/* Where the noise was made */
 	public Vector3 origin;
@@ -23,17 +26,17 @@ public class Noise
 	public Noise(Vector3 origin, float volume)
 	{
 		MakeNoise (origin, volume);
-
 	}
 
 	/* Make a new noise, reseting everything */
 	public void MakeNoise (Vector3 origin, float volume)
 	{
 		this.origin = origin;
+        this.origin.y = 1.1f;
 		this.volume = volume;
 		this.timeStamp = Time.time;
         foreach (var ai in PlayerBotDisturber.ai_list) {
-            if (Vector3.Distance(origin, ai.transform.position) * 1.25f <= volume)
+            if (Vector3.Distance(origin, ai.transform.position) <= volume * AI_HEARING)
                 ai.heard_noises.Add(this);
         }
     }
@@ -42,26 +45,11 @@ public class Noise
     /// Get how priortiezed this noise should be for the bot.
     /// </summary>
     /// <param name="from">Where the bot is. </param>
-    /// <returns>Priority</returns>
+    /// <returns>Priority (bigger = better)</returns>
     public float CalcPriority(Vector3 from)
     {
         float distance = Vector3.Distance(this.origin, from);
         float timeDiff = Time.time - this.timeStamp;
-
-        float decayedNoise = this.volume - timeDiff * DECAY_RATE;
-        return distance - (decayedNoise * NOISE_RADIUS_MULTIPLIER);
+        return 100 - timeDiff - distance / 10;
     }
-
-    /*static void DoNoise(Vector3 from, float volume)
-    {
-        var noise = new Noise(from, volume);
-
-        for (var i = 0; i < 3600; i++)
-        {
-            var ray = new Ray(this.transform.position, Random.insideUnitSphere);
-            Sonar.ShootRay(ray, sonarPointPrefab);
-        }
-
-    }*/
-
 }
