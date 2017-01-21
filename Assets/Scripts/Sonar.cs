@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Sonar : MonoBehaviour {
 
@@ -15,10 +16,13 @@ public class Sonar : MonoBehaviour {
 	public static List<Transform> points = new List<Transform> ();
 	public static List<Transform> pool = new List<Transform> ();
 
+	static Text debugPointCountText;
+
 	public static int[] map;
 	// Use this for initialization
 	void Start () {
 		map = new int[MAP_SIZE_X * MAP_SIZE_Y * MAP_SIZE_Z];
+		debugPointCountText = GameObject.Find ("pointCountText").GetComponent<Text>();
 	}
 	
 	// Update is called once per frame
@@ -30,10 +34,10 @@ public class Sonar : MonoBehaviour {
 			{
 				RemovePoint (points[i]);
 			}
-			print ("Points: " + pointCount);
 		}
 
-		displayCount = pointCount;
+
+		debugPointCountText.text = pointCount.ToString();
 	}
 
 
@@ -104,7 +108,6 @@ public class Sonar : MonoBehaviour {
 		Vector3 roundedPoint = RoundVector (pos);
 		if (map[ListPos (roundedPoint)] >= MAX_CUBE_POINTS)
 		{
-			print("Oh no you didn't");	
 			return null;
 		}
 		map [ListPos (roundedPoint)]++;
