@@ -6,8 +6,11 @@ public class SonarResponder : MonoBehaviour {
 
 	public Material mat;
 
-	void Start ()
-    {
-		this.gameObject.GetComponent<MeshRenderer> ().enabled = false;
+	void Start()
+	{
+		if (GetComponent <Renderer> () != null)
+		{
+			GetComponent <Renderer> ().enabled = false;
+		}
 	}
 }
