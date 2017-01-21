@@ -8,7 +8,7 @@ public class Sonar : MonoBehaviour {
 	public int displayCount;
 	public static int pointCount;
 
-	public static int MAX_POINTS = 16000;
+	public static int MAX_POINTS = 25000;
 	public static int MAP_SIZE_X = 105;
 	public static int MAP_SIZE_Y = 105;
 	public static int MAP_SIZE_Z = 105;
