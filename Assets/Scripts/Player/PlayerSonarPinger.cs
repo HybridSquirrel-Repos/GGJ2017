@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class PlayerSonarPinger : MonoBehaviour
 {
@@ -10,6 +11,8 @@ public class PlayerSonarPinger : MonoBehaviour
     public int pointCount;
 
     Microphone_Input mic;
+
+	static Text debugVolumeText;
 
     public static void sonar(GameObject sonarPointPrefab, int count, float volume = 10f)
     {
@@ -34,14 +37,20 @@ public class PlayerSonarPinger : MonoBehaviour
 	// Use this for initialization
 	void Start () {
 		mic = gameObject.transform.parent.GetComponentInChildren<Microphone_Input> ();
+		debugVolumeText = GameObject.Find ("volumeText").GetComponent<Text>();
 	}
 	
 	// Update is called once per frame
 	void Update () {
 		var volume = mic.GetAveragedVolume ();
-		if (volume < 0.2f)
-			volume = 0f;
-		sonar (sonarPointPrefab, (int)(volume * 500f), volume*200f);
+		if (volume > 0.02f) {
+			volume = volume * 200f;
+			volume = Mathf.Clamp (volume, volume, 30f);
+			sonar (sonarPointPrefab, (int)(volume*2), volume);
+			debugVolumeText.text = volume.ToString ();
+		}
+			
+
 
 
         if (Input.GetMouseButton(0))

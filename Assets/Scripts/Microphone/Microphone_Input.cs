@@ -28,14 +28,25 @@ public class Microphone_Input : MonoBehaviour {
 
 	public float GetAveragedVolume()
 	{ 
-		float[] data = new float[256];
-		float a = 0;
+		float[] data = new float[1024];
+		float sum = 0;
 		source.GetOutputData(data,0);
 		foreach(float s in data)
 		{
-			a += Mathf.Abs(s);
+			sum += s;
 		}
-		return a/256;
+		float avg = sum / 1024;
+
+		sum = 0;
+		foreach(float s in data)
+		{
+			sum += Mathf.Abs(avg - s);
+		}
+
+		sum = Mathf.Sqrt (sum);
+		sum = sum / 64;
+		Debug.Log (sum);
+		return sum;
 	}
 
 
