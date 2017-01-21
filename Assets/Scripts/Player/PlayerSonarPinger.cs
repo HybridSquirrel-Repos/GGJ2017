@@ -44,7 +44,7 @@ public class PlayerSonarPinger : MonoBehaviour
 	void Update () {
 		var volume = mic.GetAveragedVolume ();
 		if (volume > 0.02f) {
-			volume = volume * 200f;
+			volume = volume * 100f;
 			volume = Mathf.Clamp (volume, volume, 30f);
 			sonar (sonarPointPrefab, (int)(volume*2), volume);
 			debugVolumeText.text = volume.ToString ();
