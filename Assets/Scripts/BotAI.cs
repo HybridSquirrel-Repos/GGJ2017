@@ -189,13 +189,13 @@ public class BotAI : MonoBehaviour {
         awareness_of_player += amount;
     }
 
-    /*void TryFollowNoise()
+    void TryFollowNoise()
     {
-        Noise most_important
+        /*Noise most_important
         foreach (var noise in heard_noises) {
             noise.CalcPriority(transform.position);
-        }
-    }*/
+        }*/
+    }
 
 	void Update ()
     {
