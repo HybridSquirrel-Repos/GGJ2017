@@ -61,17 +61,12 @@ public class SonarPointFadeIn : MonoBehaviour {
 			started = true;
 		}
 
+		if (Input.GetKeyDown (KeyCode.R)) {
+			fadeOutSpeed = 1f;
 
+		}
 
 		lastDissapearRoll = Time.time;
-			
-		if (Time.time - lastDissapearRoll > 1f) {
-			lastDissapearRoll = Time.time;
-
-
-			if (Random.value < disappearChance) {
-			}
-		}
 
 	}
 }

@@ -23,6 +23,7 @@ public class Microphone_Input : MonoBehaviour {
 
 	void Update()
 	{
+<<<<<<< HEAD
 		float volume = GetAveragedVolume ();
 		if (volume >= requiredScanVolume)
 		{
@@ -34,10 +35,12 @@ public class Microphone_Input : MonoBehaviour {
 		}
 
 		scanIntervalTime -= Time.deltaTime;
+=======
+>>>>>>> c735f4923254cf6668b3ba02a9f72bdebbbda20a
 	
 	}
 
-	float GetAveragedVolume()
+	public float GetAveragedVolume()
 	{ 
 		float[] data = new float[256];
 		float a = 0;
