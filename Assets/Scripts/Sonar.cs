@@ -106,7 +106,7 @@ public class Sonar : MonoBehaviour {
 
 		Vector3 pos = position;
 		Vector3 roundedPoint = RoundVector (pos);
-		if (map[ListPos (roundedPoint)] >= MAX_CUBE_POINTS)
+		if (map[ListPos (roundedPoint)] >= MAX_CUBE_POINTS || pool.Count > MAX_POINTS)
 		{
 			return null;
 		}

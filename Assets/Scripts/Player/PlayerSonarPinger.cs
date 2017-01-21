@@ -38,11 +38,11 @@ public class PlayerSonarPinger : MonoBehaviour {
 
 
 		if (Input.GetMouseButton (0)) {
-			sonar ((int)(30000*Time.deltaTime),25f);
+			sonar ((int)(3000f*Time.deltaTime),25f);
 		}
 
 		if (Input.GetMouseButton (1)) {
-			sonar ((int)(1000*Time.deltaTime),15f);
+			sonar ((int)(500f*Time.deltaTime),15f);
 		}
 	}
 }
