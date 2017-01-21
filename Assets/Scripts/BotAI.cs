@@ -52,12 +52,13 @@ public class BotAI : MonoBehaviour {
         rigidbody = GetComponent<Rigidbody>();
         agent = GetComponent<NavMeshAgent>();
 
+        player = GameObject.FindGameObjectWithTag("Player");
+
 #if TESTING
-        Debug.Log("Initialising with TESTING");
-        player = GameObject.Find("GAME_Player");
+        if (player == null)
+            player = GameObject.Find("GAME_Player");
+
 #endif
-
-
     }
 
     void OnDrawGizmos()

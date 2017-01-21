@@ -21,7 +21,7 @@ public class Object_FadeAway : MonoBehaviour
 		Color c = mat.color;
 		c.a = 1;
 		mat.color = c;
-		print ("Hello there!");
+//		print ("Hello there!");
 		timer = timeUntilFadeStart;
 	}
 	
