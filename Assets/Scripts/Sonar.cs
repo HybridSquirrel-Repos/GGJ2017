@@ -1,39 +1,47 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Sonar : MonoBehaviour {
 
-	public int displayCount;
-	public static int pointCount;
+    public int displayCount;
+    public static int pointCount;
 
-	public static int MAX_POINTS = 1000;
-	public static int MAP_SIZE_X = 105;
-	public static int MAP_SIZE_Y = 105;
-	public static int MAP_SIZE_Z = 105;
-	public static int MAX_CUBE_POINTS = 25;
-	public static List<Transform> points = new List<Transform> ();
-	public static List<Transform> pool = new List<Transform> ();
+    public static int MAX_POINTS = 1000;
+    public static int MAP_SIZE_X = 105;
+    public static int MAP_SIZE_Y = 105;
+    public static int MAP_SIZE_Z = 105;
+    public static int MAX_CUBE_POINTS = 25;
+    public static List<Transform> points = new List<Transform>();
+    public static List<Transform> pool = new List<Transform>();
 
-	public static int[] map;
+    static Text debugPointCountText;
 
-	static Sonar ()
+    public static int[] map;
+
+    static Sonar()
     {
-		map = new int[MAP_SIZE_X * MAP_SIZE_Y * MAP_SIZE_Z];
-	}
-	
-	// Update is called once per frame
-	void Update ()
+        map = new int[MAP_SIZE_X * MAP_SIZE_Y * MAP_SIZE_Z];
+    }
+
+    void Start()
+    {
+        debugPointCountText = GameObject.Find("pointCountText").GetComponent<Text>();
+    }
+
+    // Update is called once per frame
+    void Update ()
     {
 		if (pointCount > MAX_POINTS) {
 			int pointsToRemove = pointCount - MAX_POINTS;
 			for (int i = 0; i < pointsToRemove; i++) {
 				RemovePoint (points[i]);
 			}
-			print ("Points: " + pointCount);
 		}
 
-		displayCount = pointCount;
+
+		debugPointCountText.text = pointCount.ToString();
 	}
 
 

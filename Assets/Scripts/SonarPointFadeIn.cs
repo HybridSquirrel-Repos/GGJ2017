@@ -5,12 +5,11 @@ using UnityEngine;
 public class SonarPointFadeIn : MonoBehaviour {
 
 	public float fadeInTimeout;
-	public float speed;
-	public float fadeOutSpeed = 0.01f;
-	public float fadeInSpeed = 0.1f;
+	public float fadeInTimerSpeed;
+	public float fadeOutSpeed;
+	public float fadeInSpeed;
 
 	float disappearChance;
-	float lastDissapearRoll=0;
 
 	public bool fadeIn = false;
 	public bool started = false;
@@ -20,23 +19,27 @@ public class SonarPointFadeIn : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 		disappearChance = Random.Range (0.02f, 0.5f);
-		lastDissapearRoll = Time.time + Random.Range(0f, 1f);
 		rotationDirection = Random.insideUnitSphere * 100f;
-		fadeOutSpeed = fadeOutSpeed * (Random.value + 0.001f) * 3;
+		fadeOutSpeed = fadeOutSpeed * (Random.value + 0.001f) + 0.1f;
 		transform.localScale = new Vector3 (0, 0, 0);
 		fadeInTimer = fadeInTimeout;
 	}
 	
 	// Update is called once per frame
 	void Update () 
-	{			
+	{		
+	
+		if(Random.value < 0.666f){
+			return;
+		}
+
 		float scale = transform.localScale.z;
 
 		if (!fadeIn && started)
 		{
 			if (scale > 0) 
 			{
-				scale = Mathf.Lerp (scale, 0, fadeOutSpeed);
+				scale = Mathf.Lerp (scale, 0, fadeOutSpeed * Time.deltaTime);
 				if (scale < 0.01f)
 				{
 					scale = 0;	
@@ -50,7 +53,7 @@ public class SonarPointFadeIn : MonoBehaviour {
 		{
 			if (scale < 1)
 			{
-				scale = Mathf.Lerp (scale, 1, fadeInSpeed);
+				scale = Mathf.Lerp (scale, 1, fadeInSpeed * Time.deltaTime);
 				if (1 - scale < 0.01f)
 				{
 					scale = 1;
@@ -61,11 +64,10 @@ public class SonarPointFadeIn : MonoBehaviour {
 			}
 		}
 		transform.localScale = new Vector3 (scale, scale, scale);
-
 		transform.Rotate (rotationDirection * Time.deltaTime);
 
 
-		fadeInTimer -= speed*Time.deltaTime;
+		fadeInTimer -= fadeInTimerSpeed*Time.deltaTime;
 		if (fadeInTimer <= 0f && !started) {
 			this.GetComponent<MeshRenderer> ().enabled = true;
 			fadeIn = true;
@@ -76,8 +78,5 @@ public class SonarPointFadeIn : MonoBehaviour {
 			fadeOutSpeed = 0.4f;
 
 		}
-
-		lastDissapearRoll = Time.time;
-
 	}
 }
