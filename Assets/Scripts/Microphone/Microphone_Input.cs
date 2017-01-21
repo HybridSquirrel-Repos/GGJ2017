@@ -15,7 +15,7 @@ public class Microphone_Input : MonoBehaviour {
 		source = GetComponent <AudioSource> ();
 		source.clip = Microphone.Start (null, true, 10, 44100);
 		source.loop = true;
-		source.mute = true;
+		source.mute = false;
 		while (!(Microphone.GetPosition(null) > 0)){} // Wait until the recording has started
 		source.Play ();
 
@@ -23,20 +23,11 @@ public class Microphone_Input : MonoBehaviour {
 
 	void Update()
 	{
-<<<<<<< HEAD
-		float volume = GetAveragedVolume ();
-		if (volume >= requiredScanVolume)
-		{
-			if (scanIntervalTime <= 0)
-			{
-				print ("scream: " + GetAveragedVolume ());
-				scanIntervalTime = scanInterval;
-			}
-		}
 
-		scanIntervalTime -= Time.deltaTime;
-=======
->>>>>>> c735f4923254cf6668b3ba02a9f72bdebbbda20a
+		//print ("scream: " + GetAveragedVolume ());
+			
+		
+
 	
 	}
 

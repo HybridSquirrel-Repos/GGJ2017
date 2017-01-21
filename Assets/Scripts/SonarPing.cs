@@ -13,7 +13,7 @@ public class SonarPing : MonoBehaviour {
 	void sonar(int count){
 		var me = Camera.main.transform;
 
-		Debug.Log (count);
+		//Debug.Log (count);
 
 		for (var i = 0; i < count; i++) {
 			var ray = new Ray(me.position, me.forward*0.1f + (Random.insideUnitSphere*0.13f));
@@ -30,7 +30,7 @@ public class SonarPing : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 		var volume = mic.GetAveragedVolume ();
-		if (volume < 0.05f)
+		if (volume < 0.5f)
 			volume = 0f;
 		sonar ((int)(volume * 1000f));
 
