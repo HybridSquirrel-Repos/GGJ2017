@@ -11,8 +11,6 @@ public class SonarPointFadeIn : MonoBehaviour {
 
 	public float maxScale;
 
-	float disappearChance;
-
 	public bool fadeIn = false;
 	public bool started = false;
 	public float fadeInTimer;
@@ -20,7 +18,6 @@ public class SonarPointFadeIn : MonoBehaviour {
 	Vector3 rotationDirection;
 	// Use this for initialization
 	void Start () {
-		disappearChance = Random.Range (0.02f, 0.5f);
 		rotationDirection = Random.insideUnitSphere * 100f;
 		fadeOutSpeed = fadeOutSpeed * (Random.value + 0.001f) + 0.1f;
 		transform.localScale = new Vector3 (0, 0, 0);
