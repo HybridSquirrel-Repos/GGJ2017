@@ -6,12 +6,12 @@ using UnityEngine;
 public class Noise 
 {
 	/* Decay per second */
-	const float DECAY_RATE = 10;
+	public const float DECAY_AFTER = 4.5f;
 
 	/* Multiplier from the noise to in game units */
 	const float NOISE_RADIUS_MULTIPLIER = 1;
 
-    const float AI_HEARING = 10f;
+    const float AI_HEARING = 4f;
 
 	/* Where the noise was made */
 	public Vector3 origin;
@@ -32,6 +32,7 @@ public class Noise
 	public void MakeNoise (Vector3 origin, float volume)
 	{
 		this.origin = origin;
+        this.origin.y = 1.1f;
 		this.volume = volume;
 		this.timeStamp = Time.time;
         foreach (var ai in PlayerBotDisturber.ai_list) {
@@ -49,8 +50,6 @@ public class Noise
     {
         float distance = Vector3.Distance(this.origin, from);
         float timeDiff = Time.time - this.timeStamp;
-
-        float decayedNoise = this.volume - timeDiff * DECAY_RATE;
-        return  -(decayedNoise * NOISE_RADIUS_MULTIPLIER) + distance * volume;
+        return 100 - timeDiff - distance / 10;
     }
 }

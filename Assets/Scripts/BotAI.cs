@@ -122,13 +122,21 @@ public class BotAI : MonoBehaviour {
         }
         agent.enabled = true;
 
-        if (goto_noise != null) {
+        if (chasing > 0)
+        {
+            agent.SetDestination(player.transform.position);
+            chasing -= Time.deltaTime;
+        }
+
+        else if (goto_noise != null)
+        {
             agent.SetDestination(heard_noises[goto_noise_key].origin);
             agent.SetDestination(goto_noise.origin);
             Debug.Log("GOTO:ing");
             waiting = true;
             if (Vector3.Distance(transform.position, goto_noise.origin) < 1f)
             {
+                Debug.Log("Removing at: " + goto_noise_key);
                 heard_noises.RemoveAt(goto_noise_key);
                 goto_noise = null;
             }
@@ -139,56 +147,54 @@ public class BotAI : MonoBehaviour {
 
         }
 
-        if (chasing > 0) {
-            agent.SetDestination(player.transform.position);
-            chasing -= Time.deltaTime;
-        }
-
-        else {
-			switch (guard_behaviour) {
-			case GuardBehaviour.STILL:
-				break;
-			case GuardBehaviour.POINT2POINT:
-				if (Vector3.Distance (transform.position, position_points [points_index].position) < 1) {
-					temporary_idle = time_until_next_point;
-					points_index++;
-				    if (points_index >= position_points.Length)
-					    points_index = 0;
+        else
+        {
+            switch (guard_behaviour)
+            {
+                case GuardBehaviour.STILL:
+                    break;
+                case GuardBehaviour.POINT2POINT:
+                    if (Vector3.Distance(transform.position, position_points[points_index].position) < 1)
+                    {
+                        temporary_idle = time_until_next_point;
+                        points_index++;
+                        if (points_index >= position_points.Length)
+                            points_index = 0;
                         waiting = true;
                     }
-				agent.SetDestination (position_points [points_index].position);
+                    agent.SetDestination(position_points[points_index].position);
 
-			break;
-			case GuardBehaviour.AREA:
-				if (temporary_idle <= 0 && waiting)
-				{
-					GetNewAreaDest ();
-					agent.SetDestination (area_destination);
+                    break;
+                case GuardBehaviour.AREA:
+                    if (temporary_idle <= 0 && waiting)
+                    {
+                        GetNewAreaDest();
+                        agent.SetDestination(area_destination);
 
-					waiting = false;
-                    temporary_idle = 0;
-                    return;
-				}
+                        waiting = false;
+                        temporary_idle = 0;
+                        return;
+                    }
 
-                if (area_destination == -Vector3.one)
-                {
-                    GetNewAreaDest();
-                    agent.SetDestination(area_destination);
+                    if (area_destination == -Vector3.one)
+                    {
+                        GetNewAreaDest();
+                        agent.SetDestination(area_destination);
 
-                    waiting = false;
-                }
+                        waiting = false;
+                    }
 
-                else if (Vector3.Distance (transform.position, area_destination) < 0.1f)
-				{
-					waiting = true;
-					temporary_idle = time_until_next_point;
-                    area_destination = -Vector3.one;
+                    else if (Vector3.Distance(transform.position, area_destination) < 0.1f)
+                    {
+                        waiting = true;
+                        temporary_idle = time_until_next_point;
+                        area_destination = -Vector3.one;
 
-				}
-				
-			break;
-			}
-		}
+                    }
+
+                    break;
+            }
+        }
     }
 
     void GetNewAreaDest() {
@@ -226,8 +232,16 @@ public class BotAI : MonoBehaviour {
 
         float latest_p = 0;
         int count = 0;
-        foreach (var noise in heard_noises) {  
-            //if (noise )
+        List<int> to_remove = new List<int>();
+        foreach (var noise in heard_noises) {
+
+            float timeDiff = Time.time - noise.timeStamp;
+            if (timeDiff > Noise.DECAY_AFTER)
+            {
+                to_remove.Add(count);
+                continue;
+            }
+
             float p = noise.CalcPriority(transform.position);
             if (p > latest_p)
             {
@@ -238,8 +252,9 @@ public class BotAI : MonoBehaviour {
             count++;
 
         }
-        //if (goto_noise != null)
-            //agent.SetDestination(goto_noise.origin);
+        foreach (var index in to_remove) {
+            heard_noises.RemoveAt(index);
+        }
     }
 
 	void Update ()
