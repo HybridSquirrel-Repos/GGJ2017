@@ -35,7 +35,7 @@ public class Noise
 
 
 	/* Distance from an object to the edge of the noise radius */
-	public void DistanceToNoiseFrom(Vector3 point)
+	public float DistanceToNoiseFrom(Vector3 point)
 	{
 		float distance = Vector3.Distance (this.origin, point);
 		float timeDiff = Time.time - this.timeStamp;
