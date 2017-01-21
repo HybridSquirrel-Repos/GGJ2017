@@ -35,7 +35,10 @@ public class Sound_Generator : MonoBehaviour
 	/// </summary>
 	public Color activeColor = Color.green;
 
-
+	/// <summary>
+	/// The sonar ping object.
+	/// </summary>
+	public GameObject sonarPingObject;
 
 	/// <summary>
 	/// The time until next pulse.
@@ -65,7 +68,8 @@ public class Sound_Generator : MonoBehaviour
 			} else
 			{
 				/* Send out a spherical sound */
-				Sonar.
+				PlayerSonarPinger.sonar (sonarPingObject, 1000);
+				print ("sound");
 			}
 		}
 		/* Check if player has pressed space */
@@ -84,18 +88,4 @@ public class Sound_Generator : MonoBehaviour
 		}
 	}
 
-	void MakeSound()
-	{
-		int x, y;
-		int length = 50;
-		float angle = 0.0f;
-
-		while (angle < 2 * Mathf.PI)
-		{
-			x = (int)(length * Mathf.Cos (angle));
-			y = (int)(length * Mathf.Sin (angle));
-			angle += rayInterval;
-
-		}
-	}
 }

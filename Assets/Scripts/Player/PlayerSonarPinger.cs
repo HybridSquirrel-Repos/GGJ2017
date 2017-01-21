@@ -10,18 +10,23 @@ public class PlayerSonarPinger : MonoBehaviour {
 
 	Microphone_Input mic;
 
-	void sonar(int count, float volume=10f){
-		var me = Camera.main.transform;
+	public static void sonar(GameObject sonarPointPrefab, int count, float volume=10f)
+	{
+		sonar (sonarPointPrefab, Camera.main.transform, count, volume);
+    }
 
-        //Debug.Log (count);
+	public static void sonar(GameObject sonarPointPrefab, Transform source, int count, float volume=10f)
+	{
+
+		//Debug.Log (count);
 
 		for (var i = 0; i < count; i++) {
-			var ray = new Ray(me.position, me.forward*0.1f + (Random.insideUnitSphere*0.13f));
+			var ray = new Ray(source.position, source.forward*0.1f + (Random.insideUnitSphere*0.13f));
 			Sonar.ShootRay (ray, sonarPointPrefab, volume);
 		}
 
-        var noise = new Noise(me.position, volume);
-    }
+		var noise = new Noise(source.position, volume);
+	}
 
 
 	// Use this for initialization
@@ -34,15 +39,15 @@ public class PlayerSonarPinger : MonoBehaviour {
 		var volume = mic.GetAveragedVolume ();
 		if (volume < 0.2f)
 			volume = 0f;
-		sonar ((int)(volume * 1000f), volume*200f);
+		sonar (sonarPointPrefab, (int)(volume * 1000f), volume*200f);
 
 
 		if (Input.GetMouseButton (0)) {
-			sonar ((int)(3000f*Time.deltaTime),25f);
+			sonar (sonarPointPrefab, (int)(3000f*Time.deltaTime),25f);
 		}
 
 		if (Input.GetMouseButton (1)) {
-			sonar ((int)(500f*Time.deltaTime),15f);
+			sonar (sonarPointPrefab, (int)(500f*Time.deltaTime),15f);
 		}
 	}
 }
