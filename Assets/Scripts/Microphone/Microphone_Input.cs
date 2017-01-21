@@ -23,23 +23,10 @@ public class Microphone_Input : MonoBehaviour {
 
 	void Update()
 	{
-		float volume = GetAveragedVolume ();
-		if (volume >= requiredScanVolume)
-		{
-			if (scanIntervalTime <= 0)
-			{
-				print ("scream: " + GetAveragedVolume ());
-				scanIntervalTime = scanInterval;
-			}
-		}
-
-		scanIntervalTime -= Time.deltaTime;
-
-
 	
 	}
 
-	float GetAveragedVolume()
+	public float GetAveragedVolume()
 	{ 
 		float[] data = new float[256];
 		float a = 0;

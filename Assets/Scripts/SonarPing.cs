@@ -8,44 +8,31 @@ public class SonarPing : MonoBehaviour {
 
 	public int pointCount;
 
-	void sonar(){
+	Microphone_Input mic;
+
+	void sonar(int count){
 		var me = Camera.main.transform;
-		for (var x = 0; x < Camera.main.pixelWidth; x += 20) {
-			for (var y = 0; y < Camera.main.pixelHeight; y += 20) {
-				var ray = Camera.main.ScreenPointToRay (new Vector3 (x, y, 0f));
-				Sonar.ShootRay (ray, sonarPointPrefab);
 
-			}
-		}
+		Debug.Log (count);
 
-		Debug.Log (Sonar.pointCount);
-	}
-
-
-	void otherSonar(){
-		var me = Camera.main.transform;
-		for (var i = 0; i < 500; i++) {
+		for (var i = 0; i < count; i++) {
 			var ray = new Ray(me.position, me.forward*0.1f + (Random.insideUnitSphere*0.13f));
 			Sonar.ShootRay (ray, sonarPointPrefab);
 		}
-
-		Debug.Log (Sonar.pointCount);
 	}
 
 
 	// Use this for initialization
 	void Start () {
-		
+		mic = gameObject.transform.parent.GetComponentInChildren<Microphone_Input> ();
 	}
 	
 	// Update is called once per frame
 	void Update () {
-		if (Input.GetMouseButton(0)) {
-			sonar ();
-		}
+		var volume = mic.GetAveragedVolume ();
+		if (volume < 0.05f)
+			volume = 0f;
+		sonar ((int)(volume * 1000f));
 
-		if (Input.GetMouseButton(1)) {
-			otherSonar ();
-		}
 	}
 }
