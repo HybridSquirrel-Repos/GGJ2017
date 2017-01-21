@@ -5,37 +5,33 @@ using UnityEngine.UI;
 
 public class Sonar : MonoBehaviour {
 
-    public int displayCount;
-    public static int pointCount;
+	public int displayCount;
+	public static int pointCount;
 
-    public static int MAX_POINTS = 1000;
-    public static int MAP_SIZE_X = 105;
-    public static int MAP_SIZE_Y = 105;
-    public static int MAP_SIZE_Z = 105;
-    public static int MAX_CUBE_POINTS = 25;
-    public static List<Transform> points = new List<Transform>();
-    public static List<Transform> pool = new List<Transform>();
+	public static int MAX_POINTS = 10000;
+	public static int MAP_SIZE_X = 105;
+	public static int MAP_SIZE_Y = 105;
+	public static int MAP_SIZE_Z = 105;
+	public static int MAX_CUBE_POINTS = 100;
+	public static List<Transform> points = new List<Transform> ();
+	public static List<Transform> pool = new List<Transform> ();
 
-    static Text debugPointCountText;
+	static Text debugPointCountText;
 
-    public static int[] map;
+	public static int[] map;
+	// Use this for initialization
+	void Start () {
+		map = new int[MAP_SIZE_X * MAP_SIZE_Y * MAP_SIZE_Z];
+		debugPointCountText = GameObject.Find ("pointCountText").GetComponent<Text>();
+	}
 
-    static Sonar()
-    {
-        map = new int[MAP_SIZE_X * MAP_SIZE_Y * MAP_SIZE_Z];
-    }
-
-    void Start()
-    {
-        debugPointCountText = GameObject.Find("pointCountText").GetComponent<Text>();
-    }
-
-    // Update is called once per frame
-    void Update ()
-    {
-		if (pointCount > MAX_POINTS) {
+	// Update is called once per frame
+	void Update () {
+		if (pointCount > MAX_POINTS)
+		{
 			int pointsToRemove = pointCount - MAX_POINTS;
-			for (int i = 0; i < pointsToRemove; i++) {
+			for (int i = 0; i < pointsToRemove; i++)
+			{
 				RemovePoint (points[i]);
 			}
 		}
@@ -45,8 +41,7 @@ public class Sonar : MonoBehaviour {
 	}
 
 
-	public static void ShootRay(Ray ray, GameObject sonarPointPrefab)
-    {
+	public static void ShootRay(Ray ray, GameObject sonarPointPrefab){
 		RaycastHit hit;
 		if (Physics.Raycast (ray, out hit)) {
 			//HIT OBJECT, SPAWN A SONAR POINT
@@ -55,7 +50,8 @@ public class Sonar : MonoBehaviour {
 
 
 				GameObject sonarPoint = MakePoint (sonarPointPrefab, hit.point, Random.rotation);
-				if (sonarPoint == null) {
+				if (sonarPoint == null)
+				{
 					return;
 				}
 
@@ -69,12 +65,12 @@ public class Sonar : MonoBehaviour {
 				var scale = Random.Range (0.5f, 1.5f);
 				sonarPoint.transform.localScale *= scale;
 
-	
+
 
 				//DEBUGGING ONLY
 				pointCount++;
-			}
-            else if (hit.collider.tag == "Enemy") {
+			} else if (hit.collider.tag == "Enemy")
+			{
 				// Get the render object of the enemy
 				/*Debug.Log ("Enemy Created");
 				GameObject renderEnemy = hit.collider.transform.GetChild (0).gameObject;
@@ -91,12 +87,13 @@ public class Sonar : MonoBehaviour {
 	public static void RemovePoint(Transform point)
 	{
 		//GameObject.Destroy (point.gameObject);
-		if (pool.Count <= MAX_POINTS) {
+		if (pool.Count <= MAX_POINTS)
+		{
 			point.gameObject.SetActive (false);
 			pool.Add (point);
 
-		}
-        else {
+		} else
+		{
 			Destroy (point.gameObject);
 		}
 		points.Remove (point);
@@ -106,18 +103,17 @@ public class Sonar : MonoBehaviour {
 
 	public static GameObject MakePoint(GameObject prefab, Vector3 position, Quaternion rotation)
 	{
-		Vector3 roundedPoint = RoundVector (position);
-        int index = ListPos(roundedPoint);
-        if (map == null)
-            Debug.LogError("REEEE The map array is null!");
-        if (map[index] >= MAX_CUBE_POINTS) {
-			print("Oh no you didn't");	
+
+		Vector3 pos = position;
+		Vector3 roundedPoint = RoundVector (pos);
+		if (map[ListPos (roundedPoint)] >= MAX_CUBE_POINTS)
+		{
 			return null;
 		}
-		map [index]++;
-        pointCount++;
+		map [ListPos (roundedPoint)]++;
 
-		if (pool.Count > 0) {
+		if (pool.Count > 0)
+		{
 			GameObject point = pool [0].gameObject;
 			pool.Remove(pool[0]);
 			point.transform.position = position;
