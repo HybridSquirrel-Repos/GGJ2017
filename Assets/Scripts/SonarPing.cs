@@ -38,5 +38,9 @@ public class SonarPing : MonoBehaviour {
 			sonar (500);
 		}
 
+		if (Input.GetMouseButton (0)) {
+			sonar (500);
+		}
+
 	}
 }
