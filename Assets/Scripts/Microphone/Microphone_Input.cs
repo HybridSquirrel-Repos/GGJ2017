@@ -9,25 +9,20 @@ public class Microphone_Input : MonoBehaviour {
 	AudioSource source;
 	public float scanIntervalTime = 0;
 
-	// Use this for initialization
 	void Start () 
 	{
-		source = GetComponent <AudioSource> ();
+        Application.RequestUserAuthorization(UserAuthorization.Microphone);
+        source = GetComponent <AudioSource> ();
 		source.clip = Microphone.Start (null, true, 10, 44100);
+        if (source.clip == null) {
+            Debug.LogError("Could not start microphone");
+            enabled = false;
+            return;
+        }
 		source.loop = true;
 		source.mute = false;
-		while (!(Microphone.GetPosition(null) > 0)){} // Wait until the recording has started
+		while (!(Microphone.GetPosition(null) > 0)) {} // Wait until the recording has started
 		source.Play ();
-
-	}
-
-	void Update()
-	{
-
-		//print ("scream: " + GetAveragedVolume ());
-			
-		
-
 
 	}
 
