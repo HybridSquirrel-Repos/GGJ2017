@@ -62,8 +62,8 @@ public class Sonar : MonoBehaviour {
 				points.Add (sonarPoint.transform);
 				//this should be in the SONAR POINT script
 				//sonarPoint.transform.rotation = Random.rotation;
-				var scale = Random.Range (0.5f, 1.5f);
-				sonarPoint.transform.localScale *= scale;
+				//var scale = Random.Range (0.5f, 1.5f);
+				//sonarPoint.transform.localScale *= scale;
 
 
 
