@@ -15,7 +15,7 @@ public class Microphone_Input : MonoBehaviour {
 		source = GetComponent <AudioSource> ();
 		source.clip = Microphone.Start (null, true, 10, 44100);
 		source.loop = true;
-		source.mute = false;
+		source.mute = true;
 		while (!(Microphone.GetPosition(null) > 0)){} // Wait until the recording has started
 		source.Play ();
 
@@ -34,8 +34,6 @@ public class Microphone_Input : MonoBehaviour {
 		}
 
 		scanIntervalTime -= Time.deltaTime;
-
-
 	
 	}
 
