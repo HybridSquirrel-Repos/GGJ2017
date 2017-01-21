@@ -34,5 +34,9 @@ public class SonarPing : MonoBehaviour {
 			volume = 0f;
 		sonar ((int)(volume * 1000f), volume);
 
+		if (Input.GetMouseButton (0)) {
+			sonar (500);
+		}
+
 	}
 }
