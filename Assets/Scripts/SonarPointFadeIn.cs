@@ -9,6 +9,8 @@ public class SonarPointFadeIn : MonoBehaviour {
 	public float fadeOutSpeed;
 	public float fadeInSpeed;
 
+	public float maxScale;
+
 	float disappearChance;
 
 	public bool fadeIn = false;
@@ -51,12 +53,12 @@ public class SonarPointFadeIn : MonoBehaviour {
 			}
 		} else if (started)
 		{
-			if (scale < 1)
+			if (scale < maxScale)
 			{
-				scale = Mathf.Lerp (scale, 1, fadeInSpeed * Time.deltaTime);
-				if (1 - scale < 0.01f)
+				scale = Mathf.Lerp (scale, maxScale, fadeInSpeed * Time.deltaTime);
+				if (maxScale - scale < 0.01f)
 				{
-					scale = 1;
+					scale = maxScale;
 				}
 			} else
 			{
