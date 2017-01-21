@@ -31,8 +31,6 @@ public class Sonar : MonoBehaviour {
 
 	}
 
-	public static Material cubeMaterial;
-
 	public static void ShootRay(Ray ray, GameObject sonarPointPrefab, float volume = 4){
 		RaycastHit hit;
 		if (Physics.Raycast (ray, out hit, volume)) {
@@ -62,17 +60,8 @@ public class Sonar : MonoBehaviour {
 				float c = SignedAngleBetween (hit.normal, Vector3.up, Vector3.up) / 90;
 
 				Color color = new Color (1, 1-c, 1-c);
-
-
-				//Debug.DrawRay (hit.point, hit.normal, Color.blue, 10f);
-				if (cubeMaterial == null) {
-					cubeMaterial = GameObject.FindGameObjectWithTag ("Mandatory").GetComponent <Sonar> ().floorMaterial;
-				}
-				sonarPoint.GetComponent <MeshRenderer> ().material = cubeMaterial;
 				sonarPoint.GetComponent <MeshRenderer> ().material.color = color;
-				//sonarPoint.GetComponent<MeshRenderer> ().material = hit.collider.gameObject.GetComponent<SonarResponder> ().mat;
-				
-
+			
 				//DEBUGGING ONLY
 				pointCount++;
 			}
