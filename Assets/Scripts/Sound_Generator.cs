@@ -29,7 +29,7 @@ public class Sound_Generator : MonoBehaviour
 	/// <summary>
 	/// Amount of rays
 	/// </summary>
-	public int rayCount = 1500;
+	public int rayCount = 500;
 
 	/// <summary>
 	/// What color we should be if we are unactive

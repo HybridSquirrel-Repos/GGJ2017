@@ -45,7 +45,6 @@ public class Sonar : MonoBehaviour {
 				hit.collider.GetComponent <Object_Clone> ().Clone ();
 			} else if (hit.collider.tag == "SoundGenerator")
 			{
-				print ("SoundGenerator yes sir");
 				hit.collider.GetComponent <Renderer> ().enabled = true;
 			} else if (sonarResponder != null) {
 
@@ -53,7 +52,7 @@ public class Sonar : MonoBehaviour {
 				if (map[ListPos (roundedPoint)] >= MAX_CUBE_POINTS || pointCount > MAX_POINTS)
 				{
 					return;
-				}
+				} 
 
 				GameObject sonarPoint = GameObject.Instantiate (sonarPointPrefab, hit.point, Quaternion.identity);
 				sonarPoint.GetComponent<SonarPointFadeIn> ().fadeInTimeout = hit.distance;
