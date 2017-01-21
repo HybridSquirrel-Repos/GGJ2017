@@ -35,12 +35,17 @@ public class BotAI : MonoBehaviour {
     private Rigidbody rigidbody;
     private GameObject player;
     private NavMeshAgent agent;
-    private Vector3 area_destination;
+	private Vector3 area_destination = new Vector3(-1, -1, -1);
 
     /// <summary>
     ///  Used to detect changes in behaviour.
     /// </summary>
     private GuardBehaviour old_behaviour = GuardBehaviour.STILL;
+
+	/// <summary>
+	/// If we are waiting to move to the next position (AREA only)
+	/// </summary>
+	private bool waiting = false;
 
     /// <summary>
     /// Get components and player target.
@@ -93,6 +98,7 @@ public class BotAI : MonoBehaviour {
             temporary_idle -= Time.deltaTime;
             agent.enabled = false;
             old_behaviour = GuardBehaviour.STILL;
+			waiting = false;
             return;
         }
         agent.enabled = true;
@@ -102,47 +108,76 @@ public class BotAI : MonoBehaviour {
             chasing -= Time.deltaTime;
         }
 
-        else switch (guard_behaviour) {
-                case GuardBehaviour.STILL:
-                    break;
-                case GuardBehaviour.POINT2POINT:
-                    if (Vector3.Distance(transform.position, position_points[points_index].position) < 1) {
-                        temporary_idle = time_until_next_point;
-                        points_index++;
-                        if (points_index >= position_points.Length)
-                            points_index = 0;
-                        old_behaviour = GuardBehaviour.STILL;
-                    }
+        else {
+			switch (guard_behaviour) {
+			case GuardBehaviour.STILL:
+				break;
+			case GuardBehaviour.POINT2POINT:
+				if (Vector3.Distance (transform.position, position_points [points_index].position) < 1) {
+					temporary_idle = time_until_next_point;
+					points_index++;
+				if (points_index >= position_points.Length)
+					points_index = 0;
+					old_behaviour = GuardBehaviour.STILL;
+				}
 
-                    if (old_behaviour != guard_behaviour) {
-                        old_behaviour = guard_behaviour;
-                        agent.SetDestination(position_points[points_index].position);
-                    }
+				if (old_behaviour != guard_behaviour) {
+					old_behaviour = guard_behaviour;
+					agent.SetDestination (position_points [points_index].position);
+				}
 
-                    break;
-                case GuardBehaviour.AREA:
-                    if (Vector3.Distance(transform.position, area_destination) < 1) {
-                        temporary_idle = time_until_next_point;
-                        GetNewAreaDest();
-                        //old_behaviour = GuardBehaviour.STILL;
+			break;
+			case GuardBehaviour.AREA:
+				if (temporary_idle <= 0 && waiting)
+				{
+					GetNewAreaDest ();
+					agent.SetDestination (area_destination);
+
+					waiting = false;
+				}
+				if (Vector3.Distance (transform.position, area_destination) < 0.1f)
+				{
+					transform.position = area_destination;
+					waiting = true;
+					temporary_idle = time_until_next_point;
+
+				} else
+				{
+					if (area_destination == null || area_destination == -Vector3.one)
+					{
+						GetNewAreaDest ();
 						agent.SetDestination (area_destination);
-						
-                    }
-                    if (old_behaviour != guard_behaviour) {
-                        old_behaviour = guard_behaviour;
-                        agent.SetDestination(area_destination);
-                    }
-                    break;
-	            }
+
+					} else
+					{
+
+					}
+				}
+			break;
+			}
+		}
     }
 
     void GetNewAreaDest() {
-        area_destination = new Vector3( Random.Range(position_points[0].position.x, position_points[1].position.x),
-                                        Random.Range(position_points[0].position.y, position_points[1].position.y),
-                                        Random.Range(position_points[0].position.z, position_points[1].position.z));
+		area_destination = new Vector3( RandomWithNegative(position_points[0].position.x, position_points[1].position.x), transform.position.y,
+										RandomWithNegative(position_points[0].position.z, position_points[1].position.z));
 		Debug.Log (area_destination);
 
     }
+
+	float RandomWithNegative(float a, float b)
+	{
+		if (a > b)
+		{
+			return Random.Range (b, a);
+		} else if (b > a)
+		{
+			return Random.Range (a, b);
+		} else
+		{
+			return a;
+		}
+	}
 
     /// <summary>
     /// Should be called when a player disturbs the bot.
