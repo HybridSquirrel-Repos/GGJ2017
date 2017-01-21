@@ -15,6 +15,10 @@ public class SonarPointFadeIn : MonoBehaviour {
 	public bool started = false;
 	public float fadeInTimer;
 
+	public Vector3 goal = Vector3.zero;
+
+	float waitUntilMoveToGoal;
+
 	Vector3 rotationDirection;
 	// Use this for initialization
 	void Start () {
@@ -22,12 +26,22 @@ public class SonarPointFadeIn : MonoBehaviour {
 		fadeOutSpeed = fadeOutSpeed * (Random.value + 0.001f) + 0.1f;
 		transform.localScale = new Vector3 (0, 0, 0);
 		fadeInTimer = fadeInTimeout;
+		waitUntilMoveToGoal = Random.Range (10f, 1000f) / 200f;
 	}
 	
 	// Update is called once per frame
 	void Update () 
 	{		
 	
+		if (goal != Vector3.zero)
+		{
+			waitUntilMoveToGoal -= Time.deltaTime;
+			if (waitUntilMoveToGoal <= 0) 
+			{
+				transform.position = Vector3.Lerp (transform.position, goal, Random.Range (5f, 30f) / 1000);
+			}
+		}
+
 		if(Random.value < 0.666f){
 			return;
 		}

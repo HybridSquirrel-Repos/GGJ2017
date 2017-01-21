@@ -8,7 +8,7 @@ public class SonarResponder : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-		this.gameObject.GetComponent<MeshRenderer> ().enabled = false;
+             this.gameObject.GetComponent<MeshRenderer> ().enabled = false;
 	}
 	
 	// Update is called once per frame
