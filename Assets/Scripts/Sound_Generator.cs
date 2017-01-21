@@ -14,7 +14,7 @@ public class Sound_Generator : MonoBehaviour
 	/// The time between each "pulse" of sound,
 	/// if we are active only
 	/// </summary>
-	public float soundPulseInterval = 0.5f;
+	public float soundPulseInterval = 2f;
 
 	/// <summary>
 	/// Volume of the sound
