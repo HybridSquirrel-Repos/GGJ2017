@@ -15,7 +15,7 @@ public class PlayerSonarPinger : MonoBehaviour {
 
         //Debug.Log (count);
 
-        float volume = 4;
+        float volume = count;
 
 
 		for (var i = 0; i < count; i++) {
@@ -23,7 +23,7 @@ public class PlayerSonarPinger : MonoBehaviour {
 			Sonar.ShootRay (ray, sonarPointPrefab, volume);
 		}
 
-        var noise = new Noise(me.position, volume);
+        //var noise = new Noise(me.position, volume);
     }
 
 

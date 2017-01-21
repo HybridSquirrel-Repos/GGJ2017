@@ -6,13 +6,8 @@ public class SonarResponder : MonoBehaviour {
 
 	public Material mat;
 
-	// Use this for initialization
-	void Start () {
+	void Start ()
+    {
 		this.gameObject.GetComponent<MeshRenderer> ().enabled = false;
-	}
-	
-	// Update is called once per frame
-	void Update () {
-		
 	}
 }
