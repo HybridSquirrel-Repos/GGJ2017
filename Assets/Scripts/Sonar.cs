@@ -59,7 +59,6 @@ public class Sonar : MonoBehaviour {
 
 				GameObject sonarPoint = GameObject.Instantiate (sonarPointPrefab, hit.point, Quaternion.identity);
 				sonarPoint.GetComponent<SonarPointFadeIn> ().fadeInTimeout = hit.distance;
-				print (SignedAngleBetween (hit.normal, Vector3.up, Vector3.up));
 				float r = SignedAngleBetween (hit.normal, Vector3.up, Vector3.up) / 90;
 				float g = SignedAngleBetween (hit.normal, Vector3.left, Vector3.up) / 90;
 				float b = SignedAngleBetween (hit.normal, Vector3.right, Vector3.up) / 90;
