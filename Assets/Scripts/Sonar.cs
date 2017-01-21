@@ -104,7 +104,7 @@ public class Sonar : MonoBehaviour {
 		Vector3 roundedPoint = RoundVector (pos);
 		if (map[ListPos (roundedPoint)] >= MAX_CUBE_POINTS)
 		{
-			print("Oh no you didn't");
+			print("Oh no you didn't");	
 			return null;
 		}
 		map [ListPos (roundedPoint)]++;
