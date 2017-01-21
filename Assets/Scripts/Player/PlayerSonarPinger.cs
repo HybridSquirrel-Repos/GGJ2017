@@ -39,7 +39,7 @@ public class PlayerSonarPinger : MonoBehaviour {
 		var volume = mic.GetAveragedVolume ();
 		if (volume < 0.2f)
 			volume = 0f;
-		sonar (sonarPointPrefab, (int)(volume * 1000f), volume*200f);
+		sonar (sonarPointPrefab, (int)(volume * 500f), volume*200f);
 
 
 		if (Input.GetMouseButton (0)) {
