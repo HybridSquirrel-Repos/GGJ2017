@@ -16,14 +16,20 @@ public class Sound_Generator : MonoBehaviour
 	/// </summary>
 	public float soundPulseInterval = 0.5f;
 
-	public float rayInterval = 5;
+	/// <summary>
+	/// Volume of the sound
+	/// </summary>
+	public float volume = 20;
 
 	/// <summary>
 	/// If the sound generator is emitting sound
 	/// </summary>
 	public bool isActive = false;
 
-
+	/// <summary>
+	/// Amount of rays
+	/// </summary>
+	public int rayCount = 1500;
 
 	/// <summary>
 	/// What color we should be if we are unactive
@@ -64,11 +70,12 @@ public class Sound_Generator : MonoBehaviour
 		{
 			if (timeUntilNextPulse > 0)
 			{
-				timeUntilNextPulse--;
+				timeUntilNextPulse -= Time.deltaTime;
 			} else
 			{
 				/* Send out a spherical sound */
-				PlayerSonarPinger.sonar (sonarPingObject, 1000);
+				PlayerSonarPinger.sonar (sonarPingObject, transform, rayCount, volume);
+				timeUntilNextPulse = soundPulseInterval;
 				print ("sound");
 			}
 		}
