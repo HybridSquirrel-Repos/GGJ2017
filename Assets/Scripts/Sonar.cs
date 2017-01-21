@@ -13,6 +13,9 @@ public class Sonar : MonoBehaviour {
 	public static int MAP_SIZE_Y = 105;
 	public static int MAP_SIZE_Z = 105;
 	public static int MAX_CUBE_POINTS = 100;
+
+
+
 	public static List<Transform> points = new List<Transform> ();
 	public static List<Transform> pool = new List<Transform> ();
 
@@ -49,16 +52,23 @@ public class Sonar : MonoBehaviour {
 			if (sonarResponder != null && hit.collider.tag != "Enemy") {
 
 
-				GameObject sonarPoint = MakePoint (sonarPointPrefab, hit.point, Random.rotation);
-				if (sonarPoint == null)
+				//GameObject sonarPoint = MakePoint (sonarPointPrefab, hit.point, Random.rotation);
+				//if (sonarPoint == null)
+				//{
+				//	return;
+				//}
+
+				Vector3 roundedPoint = RoundVector (hit.point);
+				if (map[ListPos (roundedPoint)] >= MAX_CUBE_POINTS || pointCount > MAX_POINTS)
 				{
 					return;
 				}
 
-				//sonarPoint = GameObject.Instantiate (sonarPointPrefab, hit.point, Quaternion.identity);
+				GameObject sonarPoint = GameObject.Instantiate (sonarPointPrefab, hit.point, Quaternion.identity);
 
 				sonarPoint.GetComponent<SonarPointFadeIn> ().fadeInTimeout = hit.distance;
 				sonarPoint.GetComponent<MeshRenderer> ().material = hit.collider.gameObject.GetComponent<SonarResponder> ().mat;
+				//sonarPoint.GetComponent<MeshRenderer> ().enabled = false;
 				points.Add (sonarPoint.transform);
 				//this should be in the SONAR POINT script
 				//sonarPoint.transform.rotation = Random.rotation;
@@ -86,16 +96,8 @@ public class Sonar : MonoBehaviour {
 
 	public static void RemovePoint(Transform point)
 	{
-		//GameObject.Destroy (point.gameObject);
-		if (pool.Count <= MAX_POINTS)
-		{
-			point.gameObject.SetActive (false);
-			pool.Add (point);
-
-		} else
-		{
-			Destroy (point.gameObject);
-		}
+		point.gameObject.SetActive (false);
+		pool.Add (point);
 		points.Remove (point);
 		pointCount--;
 		map [ListPos (RoundVector (point.position))]--;
@@ -106,7 +108,7 @@ public class Sonar : MonoBehaviour {
 
 		Vector3 pos = position;
 		Vector3 roundedPoint = RoundVector (pos);
-		if (map[ListPos (roundedPoint)] >= MAX_CUBE_POINTS || pool.Count > MAX_POINTS)
+		if (map[ListPos (roundedPoint)] >= MAX_CUBE_POINTS || pointCount > MAX_POINTS)
 		{
 			return null;
 		}
@@ -119,9 +121,9 @@ public class Sonar : MonoBehaviour {
 			point.transform.position = position;
 			point.transform.rotation = rotation;
 			var point_fade_in = point.GetComponent<SonarPointFadeIn>();
-			point_fade_in.fadeIn = point.GetComponent <SonarPointFadeIn> ().started = false;
-			point_fade_in.fadeInTimer = point.GetComponent <SonarPointFadeIn> ().fadeInTimeout;
+			point_fade_in.fadeIn = false;
 			point.gameObject.SetActive (true);
+			pointCount++;
 			return point;
 
 		} else
