@@ -46,7 +46,7 @@ public class Sonar : MonoBehaviour {
 				hit.collider.GetComponent <Object_Clone> ().Clone ();
 			} else if (hit.collider.tag == "SoundGenerator")
 			{
-				hit.collider.GetComponent <Renderer> ().enabled = true;
+				hit.collider.GetComponent <Sound_Generator> ().Show ();
 			} else if (sonarResponder != null) {
 
 				Vector3 roundedPoint = RoundVector (hit.point);
