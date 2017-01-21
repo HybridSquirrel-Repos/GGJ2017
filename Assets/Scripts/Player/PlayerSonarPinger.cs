@@ -10,13 +10,10 @@ public class PlayerSonarPinger : MonoBehaviour {
 
 	Microphone_Input mic;
 
-	void sonar(int count){
+	void sonar(int count, float volume=10f){
 		var me = Camera.main.transform;
 
         //Debug.Log (count);
-
-        float volume = 4;
-
 
 		for (var i = 0; i < count; i++) {
 			var ray = new Ray(me.position, me.forward*0.1f + (Random.insideUnitSphere*0.13f));
@@ -37,11 +34,15 @@ public class PlayerSonarPinger : MonoBehaviour {
 		var volume = mic.GetAveragedVolume ();
 		if (volume < 0.2f)
 			volume = 0f;
-		sonar ((int)(volume * 1000f));
+		sonar ((int)(volume * 1000f), volume*200f);
 
 
 		if (Input.GetMouseButton (0)) {
-			sonar (500);
+			sonar ((int)(30000*Time.deltaTime),25f);
+		}
+
+		if (Input.GetMouseButton (1)) {
+			sonar ((int)(1000*Time.deltaTime),15f);
 		}
 	}
 }
