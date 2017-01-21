@@ -10,7 +10,7 @@ public class SonarPing : MonoBehaviour {
 
 	Microphone_Input mic;
 
-	void sonar(int count, float volume){
+	void sonar(int count){
 		var me = Camera.main.transform;
 
 		//Debug.Log (count);
@@ -32,7 +32,7 @@ public class SonarPing : MonoBehaviour {
 		var volume = mic.GetAveragedVolume ();
 		if (volume < 0.2f)
 			volume = 0f;
-		sonar ((int)(volume * 1000f), volume);
+		sonar ((int)(volume * 1000f));
 
 
 		if (Input.GetMouseButton (0)) {
