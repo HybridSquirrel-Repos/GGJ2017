@@ -12,8 +12,9 @@ public class SonarPointFadeIn : MonoBehaviour {
 	float disappearChance;
 	float lastDissapearRoll=0;
 
-	bool fadeIn = false;
-	bool started = false;
+	public bool fadeIn = false;
+	public bool started = false;
+	public float fadeInTimer;
 
 	Vector3 rotationDirection;
 	// Use this for initialization
@@ -23,6 +24,7 @@ public class SonarPointFadeIn : MonoBehaviour {
 		rotationDirection = Random.insideUnitSphere * 100f;
 		fadeOutSpeed = fadeOutSpeed * (Random.value + 0.001f) * 3;
 		transform.localScale = new Vector3 (0, 0, 0);
+		fadeInTimer = fadeInTimeout;
 	}
 	
 	// Update is called once per frame
@@ -34,16 +36,25 @@ public class SonarPointFadeIn : MonoBehaviour {
 		{
 			if (scale > 0) 
 			{
-				scale -= fadeOutSpeed * Time.deltaTime;
+				scale = Mathf.Lerp (scale, 0, fadeOutSpeed);
+				if (scale < 0.01f)
+				{
+					scale = 0;	
+				}
 			} else
 			{
-				Destroy (this.gameObject);
+				Sonar.RemovePoint (this.transform);
+				//Destroy (this.gameObject);
 			}
 		} else if (started)
 		{
-			if (scale < 0.1)
+			if (scale < 1)
 			{
-				scale += fadeInSpeed * Time.deltaTime;
+				scale = Mathf.Lerp (scale, 1, fadeInSpeed);
+				if (1 - scale < 0.01f)
+				{
+					scale = 1;
+				}
 			} else
 			{
 				fadeIn = false;
@@ -54,15 +65,15 @@ public class SonarPointFadeIn : MonoBehaviour {
 		transform.Rotate (rotationDirection * Time.deltaTime);
 
 
-		fadeInTimeout -= speed*Time.deltaTime;
-		if (fadeInTimeout < 0f && !started) {
+		fadeInTimer -= speed*Time.deltaTime;
+		if (fadeInTimer <= 0f && !started) {
 			this.GetComponent<MeshRenderer> ().enabled = true;
 			fadeIn = true;
 			started = true;
 		}
 
 		if (Input.GetKeyDown (KeyCode.R)) {
-			fadeOutSpeed = 1f;
+			fadeOutSpeed = 0.4f;
 
 		}
 

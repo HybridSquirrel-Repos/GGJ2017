@@ -10,7 +10,7 @@ public class SonarPing : MonoBehaviour {
 
 	Microphone_Input mic;
 
-	void sonar(int count){
+	void sonar(int count, float volume){
 		var me = Camera.main.transform;
 
 		//Debug.Log (count);
@@ -30,9 +30,9 @@ public class SonarPing : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 		var volume = mic.GetAveragedVolume ();
-		if (volume < 0.5f)
+		if (volume < 0.2f)
 			volume = 0f;
-		sonar ((int)(volume * 1000f));
+		sonar ((int)(volume * 1000f), volume);
 
 	}
 }
