@@ -8,9 +8,9 @@ public class Sonar : MonoBehaviour {
 	public static int pointCount;
 
 	public static int MAX_POINTS = 10000;
-	public static int MAP_SIZE_X = 100;
-	public static int MAP_SIZE_Y = 100;
-	public static int MAP_SIZE_Z = 100;
+	public static int MAP_SIZE_X = 105;
+	public static int MAP_SIZE_Y = 105;
+	public static int MAP_SIZE_Z = 105;
 	public static int MAX_CUBE_POINTS = 100;
 	public static List<Transform> points = new List<Transform> ();
 	public static List<Transform> pool = new List<Transform> ();
