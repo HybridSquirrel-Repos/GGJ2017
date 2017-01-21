@@ -35,21 +35,7 @@ public class Sonar : MonoBehaviour {
 		if (Physics.Raycast (ray, out hit, volume)) {
 			//HIT OBJECT, SPAWN A SONAR POINT
 			var sonarResponder = hit.collider.gameObject.GetComponent<SonarResponder> ();
-			if (sonarResponder != null && hit.collider.tag != "Enemy") {
-
-				Vector3 roundedPoint = RoundVector (hit.point);
-				if (map[ListPos (roundedPoint)] >= MAX_CUBE_POINTS || pointCount > MAX_POINTS)
-				{
-					return;
-				}
-
-				GameObject sonarPoint = GameObject.Instantiate (sonarPointPrefab, hit.point, Quaternion.identity);
-				sonarPoint.GetComponent<SonarPointFadeIn> ().fadeInTimeout = hit.distance;
-				sonarPoint.GetComponent<MeshRenderer> ().material = hit.collider.gameObject.GetComponent<SonarResponder> ().mat;
-
-				//DEBUGGING ONLY
-				pointCount++;
-			} else if (hit.collider.tag == "Enemy")
+			 if (hit.collider.tag == "Enemy")
 			{
 				// Get the render object of the enemy
 				/*Debug.Log ("Enemy Created");
@@ -57,6 +43,23 @@ public class Sonar : MonoBehaviour {
 				GameObject copy = GameObject.Instantiate (renderEnemy, renderEnemy.transform.position, Quaternion.identity);
 				copy.GetComponent <Renderer> ().enabled = true;*/
 				hit.collider.GetComponent <Object_Clone> ().Clone ();
+			} else if (hit.collider.tag == "SoundGenerator")
+			{
+				hit.collider.GetComponent <Renderer> ().enabled = true;
+			} else if (sonarResponder != null) {
+
+				Vector3 roundedPoint = RoundVector (hit.point);
+				if (map[ListPos (roundedPoint)] >= MAX_CUBE_POINTS || pointCount > MAX_POINTS)
+				{
+					return;
+				} 
+
+				GameObject sonarPoint = GameObject.Instantiate (sonarPointPrefab, hit.point, Quaternion.identity);
+				sonarPoint.GetComponent<SonarPointFadeIn> ().fadeInTimeout = hit.distance;
+				sonarPoint.GetComponent<MeshRenderer> ().material = hit.collider.gameObject.GetComponent<SonarResponder> ().mat;
+
+				//DEBUGGING ONLY
+				pointCount++;
 			}
 		}
 		//more debugging
