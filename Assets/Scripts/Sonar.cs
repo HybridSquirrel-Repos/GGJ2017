@@ -22,7 +22,7 @@ public class Sonar : MonoBehaviour {
 		if (Physics.Raycast (ray, out hit)) {
 			//HIT OBJECT, SPAWN A SONAR POINT
 			var sonarResponder = hit.collider.gameObject.GetComponent<SonarResponder> ();
-			if (sonarResponder != null && hit.collider.tag != "Enemy" && false) {
+			if (sonarResponder != null && hit.collider.tag != "Enemy") {
 				var sonarPoint = GameObject.Instantiate (sonarPointPrefab, hit.point, Quaternion.identity);
 				sonarPoint.GetComponent<SonarPointFadeIn> ().fadeInTimeout = hit.distance;
 				sonarPoint.GetComponent<MeshRenderer> ().material = hit.collider.gameObject.GetComponent<SonarResponder> ().mat;

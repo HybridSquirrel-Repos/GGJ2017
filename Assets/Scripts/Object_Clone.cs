@@ -27,6 +27,13 @@ public class Object_Clone : MonoBehaviour
 		}
 	}
 
+	void OnDrawGizmos()
+	{
+		Gizmos.color = Color.blue;
+		Gizmos.DrawCube (transform.position, new Vector3 (1, 2, 1));
+
+	}
+
 	public void Clone()
 	{
 		if (cloneTime <= 0f) 
