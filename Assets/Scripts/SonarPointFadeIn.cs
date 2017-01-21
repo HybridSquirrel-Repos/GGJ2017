@@ -45,8 +45,9 @@ public class SonarPointFadeIn : MonoBehaviour {
 				}
 			} else
 			{
-				Sonar.RemovePoint (this.transform);
-				//Destroy (this.gameObject);
+				//Sonar.RemovePoint (this.transform);
+				Destroy (this.gameObject);
+				Sonar.pointCount--;
 			}
 		} else if (started)
 		{
