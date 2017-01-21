@@ -49,5 +49,11 @@ public class PlayerSonarPinger : MonoBehaviour {
 		if (Input.GetMouseButton (1)) {
 			sonar (sonarPointPrefab, (int)(500f*Time.deltaTime),15f);
 		}
+
+
+		if (Input.GetKeyDown (KeyCode.Y))
+		{
+			sonar (sonarPointPrefab, 1);
+		}
 	}
 }
