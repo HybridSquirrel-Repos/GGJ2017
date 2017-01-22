@@ -56,13 +56,11 @@ public class DeathScreenAnimation : MonoBehaviour
 		}
 		if (playing)
 		{
-			print ("playing");
 			if (fadeOutTimer > 0)
 			{
 				fadeOutTimer -= Time.deltaTime;
 			} else
 			{
-				print ("Fade out");
 				// Fade in overlay
 				float alpha = Mathf.Lerp(fadeOutPanel.color.a, 1, 0.3f);
 				Color c = new Color (fadeOutPanel.color.r, fadeOutPanel.color.g, fadeOutPanel.color.g, alpha);
