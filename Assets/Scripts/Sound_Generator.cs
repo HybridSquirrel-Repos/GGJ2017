@@ -51,10 +51,15 @@ public class Sound_Generator : MonoBehaviour
 	/// </summary>
 	public GameObject sonarPingObject;
 
-	/// <summary>
-	/// The time until next pulse.
-	/// </summary>
-	private float timeUntilNextPulse = 0f;
+    /// <summary>
+    /// Is set to true if the bots don't care about it anymore.
+    /// </summary>
+    public bool ineffective = false;
+
+    /// <summary>
+    /// The time until next pulse.
+    /// </summary>
+    private float timeUntilNextPulse = 0f;
 
 	/// <summary>
 	/// The material of the object
@@ -91,7 +96,7 @@ public class Sound_Generator : MonoBehaviour
 			} else
 			{
 				/* Send out a spherical sound */
-				PlayerSonarPinger.sonar (sonarPingObject, transform, rayCount, volume);
+				PlayerSonarPinger.sonar (sonarPingObject, transform, rayCount, volume, !ineffective);
 				timeUntilNextPulse = soundPulseInterval;
 				print ("sound");
 			}

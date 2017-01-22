@@ -1,6 +1,8 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class Game_Controller : MonoBehaviour 
 {
@@ -10,12 +12,19 @@ public class Game_Controller : MonoBehaviour
 	public float winCheckInterval = 5f;
 
 	/// <summary>
+	/// The object that we fade in/out
+	/// </summary>
+	public Image panel;
+
+	/// <summary>
 	/// A list of all the sound generators in the scene / world. Found dynamically
 	/// </summary>
 	private List<Sound_Generator> soundGenerators = new List<Sound_Generator>();
 
 
 	private float timeUntilNextWinCheck = 0f; 
+
+	private bool fadeInOverlay = false;
 
 	// Use this for initialization
 	void Start () 
@@ -48,10 +57,29 @@ public class Game_Controller : MonoBehaviour
 					print (generator.name + " is not activated");
 				}
 			}
+            if (soundGenerators.Count < 1)
+                allActivated = false;
+
 			if (allActivated)
 			{
-				print ("YOU WON!");
+				fadeInOverlay = true;
 			}
 		}
+
+
+		if (fadeInOverlay)
+		{
+			Color c = panel.color;
+			c.a = Mathf.Lerp (c.a, 1, 0.05f);
+			panel.color = c;
+
+			if (c.a >= 0.95f)
+			{
+				c.a = 1;
+                SceneManager.LoadScene (SceneManager.GetActiveScene ().buildIndex + 1);
+                //panel.color = new Color(0, 0, 0, 0);
+            }
+		}
+
 	}
 }

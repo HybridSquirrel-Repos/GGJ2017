@@ -12,13 +12,26 @@ public class PlayerBotDisturber : MonoBehaviour {
 
     public static List<BotAI> ai_list = new List<BotAI>();
 
+	void Start()
+	{
+		Reset.SubscribeToReset (this.gameObject);
+	}
+
 	void Update ()
     {
-        foreach (var ai in ai_list) {
-            float dist = Vector3.Distance(ai.transform.position, this.transform.position);
-            if (dist < radius_of_detecion) {
-                ai.Disturb(effectivity * Time.deltaTime / dist);
-            }
-        }
+		if (!DeathScreenAnimation.dead)
+		{
+	        foreach (var ai in ai_list) {
+	            float dist = Vector3.Distance(ai.transform.position, this.transform.position);
+	            if (dist < radius_of_detecion) {
+	                ai.Disturb(effectivity * Time.deltaTime / dist);
+	            }
+	        }
+		}
+	}
+
+	void ResetGame()
+	{
+		ai_list = new List<BotAI> ();
 	}
 }

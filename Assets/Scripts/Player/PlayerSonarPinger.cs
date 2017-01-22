@@ -19,7 +19,7 @@ public class PlayerSonarPinger : MonoBehaviour
         sonar(sonarPointPrefab, Camera.main.transform, count, volume);
     }
 
-    public static void sonar(GameObject sonarPointPrefab, Transform source, int count, float volume = 10f)
+    public static void sonar(GameObject sonarPointPrefab, Transform source, int count, float volume = 10f, bool notify_ai = true)
     {
 
         //Debug.Log (count);
@@ -30,7 +30,7 @@ public class PlayerSonarPinger : MonoBehaviour
             Sonar.ShootRay(ray, sonarPointPrefab, volume);
         }
 
-        if (volume > 3)
+        if (volume > 3 && notify_ai)
             new Noise(source.position, volume);
     }
 

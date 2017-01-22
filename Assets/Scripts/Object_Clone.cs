@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Object_Clone : MonoBehaviour 
 {
-	public float cloneTimer = 3f;
+	public float cloneTimer = 1.5f;
 	public Vector3 cloneOffset = Vector3.zero;
 	public GameObject cloneObject;
 
@@ -44,7 +44,7 @@ public class Object_Clone : MonoBehaviour
 			Renderer renderer = clone.GetComponent <Renderer> ();
 			renderer.enabled = true;
 			Color rendererColor = renderer.material.color;
-			rendererColor.a = 255;
+			rendererColor.a = 1;
 			cloneTime = cloneTimer;
 
 
