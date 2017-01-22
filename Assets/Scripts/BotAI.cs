@@ -39,6 +39,10 @@ public class BotAI : MonoBehaviour {
 
     public double chase_determination = 7f;
 
+    private double search_time = 0f;
+
+    //public double 
+
     public AudioClip sound_screech;
 
     // Caches & private data. //
@@ -147,7 +151,7 @@ public class BotAI : MonoBehaviour {
             agent.speed = charge_speed;
             agent.SetDestination(heard_noises[goto_noise_key].origin);
             agent.SetDestination(goto_noise.origin);
-            Debug.Log("GOTO:ing");
+            
             waiting = true;
             if (Vector3.Distance(transform.position, goto_noise.origin) < 1f)
             {
@@ -159,6 +163,10 @@ public class BotAI : MonoBehaviour {
             {
                 return;
             }
+            search_time -= Time.deltaTime;
+
+            if (search_time <= 0)
+                goto_noise = null;
 
         }
 
@@ -269,7 +277,9 @@ public class BotAI : MonoBehaviour {
                 goto_noise = noise;
                 goto_noise_key = count;
                 latest_p = p;
+                search_time = chase_determination;
             }
+
             count++;
 
         }
