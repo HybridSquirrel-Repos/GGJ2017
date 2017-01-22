@@ -96,13 +96,18 @@ public class Sonar : MonoBehaviour {
 				GameObject sonarPoint = GameObject.Instantiate (sonarPointPrefab, hit.point, Quaternion.identity);
 				sonarPoint.GetComponent<SonarPointFadeIn> ().fadeInTimeout = hit.distance;
 
-				float c = SignedAngleBetween (hit.normal, Vector3.up, Vector3.up) / 90;
-				float r = (c * (maxColor.r - minColor.r)) + minColor.r;
-				float g = (c * (maxColor.g - minColor.g)) + minColor.g;
-				float b = (c * (maxColor.b - minColor.b)) + minColor.b;
-				Color color = new Color (r, g, b);
-				print (color);
-				sonarPoint.GetComponent <MeshRenderer> ().material.color = color;
+
+				//coloring the sonar Point
+				if (sonarResponder.specialColor == true) {
+					sonarPoint.GetComponent <MeshRenderer> ().material.color = sonarResponder.color;
+				} else {
+					float c = SignedAngleBetween (hit.normal, Vector3.up, Vector3.up) / 90;
+					float r = (c * (maxColor.r - minColor.r)) + minColor.r;
+					float g = (c * (maxColor.g - minColor.g)) + minColor.g;
+					float b = (c * (maxColor.b - minColor.b)) + minColor.b;
+					Color color = new Color (r, g, b);
+					sonarPoint.GetComponent <MeshRenderer> ().material.color = color;
+				}
 			
 				//DEBUGGING ONLY
 				pointCount++;
