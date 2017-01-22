@@ -229,7 +229,6 @@ public class BotAI : MonoBehaviour {
     void GetNewAreaDest() {
 		area_destination = new Vector3( RandomWithNegative(position_points[0].position.x, position_points[1].position.x), transform.position.y,
 										RandomWithNegative(position_points[0].position.z, position_points[1].position.z));
-		Debug.Log (area_destination);
 
     }
 
