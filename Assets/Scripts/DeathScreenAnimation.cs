@@ -47,11 +47,13 @@ public class DeathScreenAnimation : MonoBehaviour
 		}
 		if (playing)
 		{
+			print ("playing");
 			if (fadeOutTimer > 0)
 			{
 				fadeOutTimer -= Time.deltaTime;
 			} else
 			{
+				print ("Fade out");
 				// Fade in overlay
 				float alpha = Mathf.Lerp(fadeOutPanel.color.a, 1, 0.3f);
 				Color c = new Color (fadeOutPanel.color.r, fadeOutPanel.color.g, fadeOutPanel.color.g, alpha);
@@ -87,11 +89,13 @@ public class DeathScreenAnimation : MonoBehaviour
 
 	public void Play()
 	{
-		scareObject.SetActive (true);
-		fadeOutTimer = timeUntilScreenFadeOut;
-		playing = true;
-		ac.SetTrigger ("attack");
-		dead = true;
-
+		if (!playing)
+		{
+			scareObject.SetActive (true);
+			fadeOutTimer = timeUntilScreenFadeOut;
+			playing = true;
+			ac.SetTrigger ("attack");
+			dead = true;
+		}
 	}
 }
