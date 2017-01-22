@@ -12,5 +12,10 @@ public class SonarResponder : MonoBehaviour {
 		{
 			GetComponent <Renderer> ().enabled = false;
 		}
+
+		if (GetComponent <Terrain> () != null)
+		{
+			GetComponent <Terrain> ().enabled = false;
+		}
 	}
 }
