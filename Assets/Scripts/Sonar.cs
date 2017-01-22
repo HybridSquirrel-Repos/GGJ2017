@@ -41,18 +41,24 @@ public class Sonar : MonoBehaviour {
 		if (Physics.Raycast (ray, out hit, volume, ignorePlayer)) {
 			//HIT OBJECT, SPAWN A SONAR POINT
 			var sonarResponder = hit.collider.gameObject.GetComponent<SonarResponder> ();
-			 if (hit.collider.tag == "Enemy")
-			{
-				// Get the render object of the enemy
-				/*Debug.Log ("Enemy Created");
+            if (hit.collider.tag == "Enemy")
+            {
+                // Get the render object of the enemy
+                /*Debug.Log ("Enemy Created");
 				GameObject renderEnemy = hit.collider.transform.GetChild (0).gameObject;
 				GameObject copy = GameObject.Instantiate (renderEnemy, renderEnemy.transform.position, Quaternion.identity);
 				copy.GetComponent <Renderer> ().enabled = true;*/
-				hit.collider.GetComponent <Object_Clone> ().Clone ();
-			} else if (hit.collider.tag == "SoundGenerator")
-			{
-				hit.collider.GetComponent <Sound_Generator> ().Show ();
-			} else if (sonarResponder != null) {
+                hit.collider.GetComponent<Object_Clone>().Clone();
+            }
+            else if (hit.collider.tag == "SoundGenerator")
+            {
+                hit.collider.GetComponent<Sound_Generator>().Show();
+            }
+            else if (hit.collider.tag == "Ghost")
+            {
+                Destroy(hit.collider.gameObject);
+            }	
+            else if (sonarResponder != null) {
 				Vector3 roundedPoint = RoundVector (hit.point);
 				if (map[ListPos (roundedPoint)] >= MAX_CUBE_POINTS || pointCount > MAX_POINTS)
 				{
