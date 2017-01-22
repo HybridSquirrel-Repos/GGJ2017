@@ -69,6 +69,7 @@ public class Sound_Generator : MonoBehaviour
 	private float timeUntilFadeOut = 0;
 
 
+
 	/// <summary>
 	/// What alpha we are currently trying to reach
 	/// </summary>
@@ -111,7 +112,7 @@ public class Sound_Generator : MonoBehaviour
 				isActive = !isActive;
 
 				/* Update the color of the material according to the state of the sound generator */
-				mat.color = (isActive) ? activeColor : unactiveColor;
+				//mat.color = (isActive) ? activeColor : unactiveColor;
 
 			}
 		}
