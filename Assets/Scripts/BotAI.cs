@@ -289,9 +289,9 @@ public class BotAI : MonoBehaviour {
 
 	void Update ()
     {
-
-        if (Vector3.Distance(transform.position, player.transform.position) < 1) {
-            Debug.LogError("GAME OVER!");
+        if (Vector3.Distance(transform.position, player.transform.position) < 1) 
+		{
+			GameObject.FindGameObjectWithTag ("Death").GetComponent <DeathScreenAnimation> ().Play ();
         }
 
         if (awareness_of_player >= 100) {

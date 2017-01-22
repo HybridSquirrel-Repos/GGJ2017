@@ -6,6 +6,7 @@ using UnityEngine.SceneManagement;
 
 public class DeathScreenAnimation : MonoBehaviour 
 {
+	public static bool dead = false;
 	/// <summary>
 	/// The Object you use to 
 	/// </summary>
@@ -19,20 +20,30 @@ public class DeathScreenAnimation : MonoBehaviour
 	/// <summary>
 	/// Time until we should fade in the dark overlay and reset the level
 	/// </summary>
-	public float timeUntilScreenFadeOut = 2f;
+	public float timeUntilScreenFadeOut = 0.5f;
 
+	/// <summary>
+	/// The panel that we fade out
+	/// </summary>
 	public Image fadeOutPanel;
 
 	private float fadeOutTimer = 0f;
 
 	private float fadeInTimer = 0f;
 
+	private Image fadeObject;
+
+	private int loadSceneIndex = 0;
+
 	bool playing = false;
 	// Use this for initialization
 	void Start ()
 	{
+		dead = false;
+
 		fadeInTimer = timeUntilScreenFadeOut;
         fadeOutPanel = GameObject.FindGameObjectWithTag("Mandatory").transform.Find("Canvas/Panel").GetComponent<Image>();
+		fadeObject = fadeOutPanel;
     }
 	
 	// Update is called once per frame
@@ -44,20 +55,26 @@ public class DeathScreenAnimation : MonoBehaviour
 		}
 		if (playing)
 		{
+			print ("playing");
 			if (fadeOutTimer > 0)
 			{
 				fadeOutTimer -= Time.deltaTime;
 			} else
 			{
+				print ("Fade out");
 				// Fade in overlay
-				float alpha = Mathf.Lerp(fadeOutPanel.color.a, 1, 0.03f);
+				float alpha = Mathf.Lerp(fadeOutPanel.color.a, 1, 0.3f);
 				Color c = new Color (fadeOutPanel.color.r, fadeOutPanel.color.g, fadeOutPanel.color.g, alpha);
-				fadeOutPanel.color = c;
+				fadeObject.color = c;
 
 				if (alpha >= 0.95)
 				{
 					// Reset scene
-					SceneManager.LoadScene (SceneManager.GetActiveScene ().buildIndex);
+					if (this.loadSceneIndex == SceneManager.GetActiveScene ().buildIndex)
+						Reset.ResetGame ();
+
+
+					SceneManager.LoadScene (this.loadSceneIndex);
 				}
 			}
 		} else
@@ -70,7 +87,7 @@ public class DeathScreenAnimation : MonoBehaviour
 				// Fade out overlay
 				float alpha = Mathf.Lerp(fadeOutPanel.color.a, 0, 0.03f);
 				Color c = new Color (fadeOutPanel.color.r, fadeOutPanel.color.g, fadeOutPanel.color.g, alpha);
-				fadeOutPanel.color = c;
+				fadeObject.color = c;
 
 				if (alpha <= 0.05)
 				{
@@ -83,10 +100,18 @@ public class DeathScreenAnimation : MonoBehaviour
 
 	public void Play()
 	{
-		scareObject.SetActive (true);
-		fadeOutTimer = timeUntilScreenFadeOut;
-		playing = true;
-		ac.SetTrigger ("attack");
+		if (!playing)
+		{
+			scareObject.SetActive (true);
+			fadeOutTimer = timeUntilScreenFadeOut;
+			playing = true;
+			ac.SetTrigger ("attack");
+			dead = true;
+			fadeObject = fadeOutPanel;
+			loadSceneIndex = SceneManager.GetActiveScene ().buildIndex;
 
+		}
 	}
+
+
 }
