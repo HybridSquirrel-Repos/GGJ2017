@@ -22,11 +22,18 @@ public class DeathScreenAnimation : MonoBehaviour
 	/// </summary>
 	public float timeUntilScreenFadeOut = 0.5f;
 
+	/// <summary>
+	/// The panel that we fade out
+	/// </summary>
 	public Image fadeOutPanel;
 
 	private float fadeOutTimer = 0f;
 
 	private float fadeInTimer = 0f;
+
+	private Image fadeObject;
+
+	private int loadSceneIndex = 0;
 
 	bool playing = false;
 	// Use this for initialization
@@ -36,6 +43,7 @@ public class DeathScreenAnimation : MonoBehaviour
 
 		fadeInTimer = timeUntilScreenFadeOut;
         fadeOutPanel = GameObject.FindGameObjectWithTag("Mandatory").transform.Find("Canvas/Panel").GetComponent<Image>();
+		fadeObject = fadeOutPanel;
     }
 	
 	// Update is called once per frame
@@ -57,13 +65,16 @@ public class DeathScreenAnimation : MonoBehaviour
 				// Fade in overlay
 				float alpha = Mathf.Lerp(fadeOutPanel.color.a, 1, 0.3f);
 				Color c = new Color (fadeOutPanel.color.r, fadeOutPanel.color.g, fadeOutPanel.color.g, alpha);
-				fadeOutPanel.color = c;
+				fadeObject.color = c;
 
 				if (alpha >= 0.95)
 				{
 					// Reset scene
-					Reset.ResetGame ();
-					SceneManager.LoadScene (SceneManager.GetActiveScene ().buildIndex);
+					if (this.loadSceneIndex == SceneManager.GetActiveScene ().buildIndex)
+						Reset.ResetGame ();
+
+
+					SceneManager.LoadScene (this.loadSceneIndex);
 				}
 			}
 		} else
@@ -76,7 +87,7 @@ public class DeathScreenAnimation : MonoBehaviour
 				// Fade out overlay
 				float alpha = Mathf.Lerp(fadeOutPanel.color.a, 0, 0.03f);
 				Color c = new Color (fadeOutPanel.color.r, fadeOutPanel.color.g, fadeOutPanel.color.g, alpha);
-				fadeOutPanel.color = c;
+				fadeObject.color = c;
 
 				if (alpha <= 0.05)
 				{
@@ -96,6 +107,11 @@ public class DeathScreenAnimation : MonoBehaviour
 			playing = true;
 			ac.SetTrigger ("attack");
 			dead = true;
+			fadeObject = fadeOutPanel;
+			loadSceneIndex = SceneManager.GetActiveScene ().buildIndex;
+
 		}
 	}
+
+
 }
