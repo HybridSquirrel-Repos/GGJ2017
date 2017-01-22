@@ -12,6 +12,11 @@ public class DeathScreenAnimation : MonoBehaviour
 	public GameObject scareObject;
 
 	/// <summary>
+	/// The animator controller
+	/// </summary>
+	public Animator ac;
+
+	/// <summary>
 	/// Time until we should fade in the dark overlay and reset the level
 	/// </summary>
 	public float timeUntilScreenFadeOut = 2f;
@@ -80,6 +85,7 @@ public class DeathScreenAnimation : MonoBehaviour
 		scareObject.SetActive (true);
 		fadeOutTimer = timeUntilScreenFadeOut;
 		playing = true;
+		ac.SetTrigger ("attack");
 
 	}
 }
