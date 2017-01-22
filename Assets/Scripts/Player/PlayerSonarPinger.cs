@@ -43,11 +43,13 @@ public class PlayerSonarPinger : MonoBehaviour
 	// Update is called once per frame
 	void Update () {
 		var volume = mic.GetAveragedVolume ();
-		if (volume > 0.02f) {
-			volume = volume * 100f;
+		volume = volume * 100f;
+		volume = Mathf.Pow (volume, 2f);
+		volume *= 5f;
+		debugVolumeText.text = volume.ToString ();
+		if (volume > 0.1f) {
 			volume = Mathf.Clamp (volume, volume, 30f);
 			sonar (sonarPointPrefab, (int)(volume*2), volume);
-			debugVolumeText.text = volume.ToString ();
 		}
 			
 
