@@ -66,14 +66,21 @@ public class Sonar : MonoBehaviour {
 					Ray reverseRay = new Ray (hit.point + Vector3.up * 0.1f, (Camera.main.transform.position - hit.point).normalized);
 					//reverseRay.direction = (Camera.main.posi)
 					Physics.Raycast(reverseRay,out reverseHit, 100f, alsoHitPlayer);
-					//Debug.DrawLine (reverseRay.origin, reverseHit.point, Color.cyan, 1f);
-					if (reverseHit.transform.CompareTag ("Player") == false) {
-						//reverse ray DID NOT hit player, so he can't hear this echo
-						Debug.DrawLine (reverseRay.origin, reverseHit.point, Color.red, 10f);
-						return;
-					} else {
-						Debug.DrawLine (reverseRay.origin, reverseHit.point, Color.green, 10f);
-					}
+                    //Debug.DrawLine (reverseRay.origin, reverseHit.point, Color.cyan, 1f);
+
+                    if (reverseHit.transform != null)
+                    {
+                        if (reverseHit.transform.CompareTag("Player") == false)
+                        {
+                            //reverse ray DID NOT hit player, so he can't hear this echo
+                            Debug.DrawLine(reverseRay.origin, reverseHit.point, Color.red, 10f);
+                            return;
+                        }
+                        else
+                        {
+                            Debug.DrawLine(reverseRay.origin, reverseHit.point, Color.green, 10f);
+                        }
+                    }
 				}
 
 				GameObject sonarPoint = GameObject.Instantiate (sonarPointPrefab, hit.point, Quaternion.identity);

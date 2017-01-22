@@ -57,6 +57,9 @@ public class Game_Controller : MonoBehaviour
 					print (generator.name + " is not activated");
 				}
 			}
+            if (soundGenerators.Count < 1)
+                allActivated = false;
+
 			if (allActivated)
 			{
 				fadeInOverlay = true;
@@ -73,8 +76,9 @@ public class Game_Controller : MonoBehaviour
 			if (c.a >= 0.95f)
 			{
 				c.a = 1;
-				SceneManager.LoadScene (SceneManager.GetActiveScene ().buildIndex + 1);
-			}
+                SceneManager.LoadScene (SceneManager.GetActiveScene ().buildIndex + 1);
+                //panel.color = new Color(0, 0, 0, 0);
+            }
 		}
 
 	}
