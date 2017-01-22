@@ -116,13 +116,17 @@ public class BotAI : MonoBehaviour {
             }
 		}
 
+		Gizmos.color = Color.blue;
+		Gizmos.DrawCube (transform.position, new Vector3(1, 2, 1));
+
         Gizmos.color = Color.black;
         foreach (var noise in heard_noises)
         {
             if (noise == null)
                 continue;
             Gizmos.DrawSphere(noise.origin, 0.25f);
-        }
+		}
+
     }
 
     void DoMovement()

@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class DeathScreenAnimation : MonoBehaviour 
 {
+	public GameObject scareObject;
+
 	bool playing = false;
 	// Use this for initialization
 	void Start () {
@@ -13,18 +15,11 @@ public class DeathScreenAnimation : MonoBehaviour
 	// Update is called once per frame
 	void Update () 
 	{
-		if (Input.GetKeyDown (KeyCode.I))
-		{
-			Play ();
-		}
+		
 	}
 
 	public void Play()
 	{
-//		playing = true;
-//		foreach (GameObject point in GameObject.FindGameObjectsWithTag ("SonarPoint"))
-//		{
-//			point.GetComponent <SonarPointFadeIn> ().goal = transform.position;
-//		}
+
 	}
 }
