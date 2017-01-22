@@ -40,11 +40,11 @@ public class Microphone_Input : MonoBehaviour {
 		sum = 0;
 		foreach(float s in data)
 		{
-			sum += Mathf.Abs(avg - s);
+			sum += Mathf.Pow(avg - s, 2f);
 		}
 
 		sum = Mathf.Sqrt (sum);
-		sum = sum / 64;
+		sum = sum / 256;
 		return sum;
 	}
 
