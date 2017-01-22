@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class DeathScreenAnimation : MonoBehaviour 
 {
-	public GameObject 
+	public GameObject scareObject;
 
 	bool playing = false;
 	// Use this for initialization
