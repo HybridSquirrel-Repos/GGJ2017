@@ -45,7 +45,6 @@ public class Microphone_Input : MonoBehaviour {
 
 		sum = Mathf.Sqrt (sum);
 		sum = sum / 64;
-		Debug.Log (sum);
 		return sum;
 	}
 
