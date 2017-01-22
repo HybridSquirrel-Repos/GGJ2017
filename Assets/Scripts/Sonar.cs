@@ -56,7 +56,8 @@ public class Sonar : MonoBehaviour {
             }
             else if (hit.collider.tag == "SoundGenerator")
             {
-                hit.collider.GetComponent<Sound_Generator>().Show();
+                //hit.collider.GetComponent<Sound_Generator>().Show();
+                hit.collider.GetComponent<ObjectPopup>().Popup();
             }
             else if (hit.collider.tag == "Ghost")
             {

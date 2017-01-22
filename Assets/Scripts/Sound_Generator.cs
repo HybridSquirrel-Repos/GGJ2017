@@ -74,16 +74,6 @@ public class Sound_Generator : MonoBehaviour
 	/// What alpha we are currently trying to reach
 	/// </summary>
 	private float goalAlpha = 0f;
-
-	// Use this for initialization
-	void Start () {
-		mat = GetComponent <Renderer> ().material;
-		GetComponent <Renderer> ().enabled = true;
-		Color color = (isActive) ? activeColor : unactiveColor;
-		color.a = 0;
-		mat.color = color;
-
-	}
 	
 	// Update is called once per frame
 	void Update () 
@@ -99,7 +89,6 @@ public class Sound_Generator : MonoBehaviour
 				/* Send out a spherical sound */
 				PlayerSonarPinger.sonar (sonarPingObject, transform, rayCount, volume, !ineffective);
 				timeUntilNextPulse = soundPulseInterval;
-				print ("sound");
 			}
 		}
 		/* Check if player has pressed space */
@@ -110,46 +99,7 @@ public class Sound_Generator : MonoBehaviour
 			{
 				/* Invert the active state */
 				isActive = !isActive;
-
-				/* Update the color of the material according to the state of the sound generator */
-				//mat.color = (isActive) ? activeColor : unactiveColor;
-
 			}
 		}
-
-		/* Check if our current alpha isn't our goal alpha */
-		if (mat.color.a != goalAlpha)
-		{
-			/* Interpolate our current alpha to the goal alpha*/
-			float alpha = Mathf.Lerp (mat.color.a, goalAlpha, fadeSpeed);
-
-			/* Use the same RGB values as previous, but alter the alpha value to the lerped value */
-			Color color = new Color (mat.color.r, mat.color.g, mat.color.b, alpha);
-			if (isActive)
-			{
-				alpha = 1;
-			}
-			/* Set the new color as the material's color */
-			mat.color = color;
-		}
-		if (mat.color.a > 0 && !isActive)
-		{
-			if (timeUntilFadeOut > 0)
-			{
-				timeUntilFadeOut -= Time.deltaTime;
-			} else
-			{
-				goalAlpha = 0;
-			}
-		}
-
-
-	}
-
-
-	public void Show ()
-	{
-		goalAlpha = 1;
-		timeUntilFadeOut = 3f;
 	}
 }
