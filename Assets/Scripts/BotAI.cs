@@ -297,9 +297,9 @@ public class BotAI : MonoBehaviour {
 
 	void Update ()
     {
-
-        if (Vector3.Distance(transform.position, player.transform.position) < 1) {
-            Debug.LogError("GAME OVER!");
+        if (Vector3.Distance(transform.position, player.transform.position) < 1) 
+		{
+			GameObject.FindGameObjectWithTag ("Death").GetComponent <DeathScreenAnimation> ().Play ();
         }
 
         if (awareness_of_player >= 100) {
@@ -325,12 +325,18 @@ public class BotAI : MonoBehaviour {
 
         DoMovement();
 
+        if (chasing > 0 && time_until_next_sound < 3) {
+            AudioSource.PlayClipAtPoint(sound_charge, transform.position);
+            PlayerSonarPinger.sonar(sonarPointPrefab, transform, 600, 3);
+        }
         if (time_until_next_sound <= 0) {
             time_until_next_sound = 5f;
             if (chasing > 0)
             {
                 Debug.Log("I'm chasing. KEK");
-                AudioSource.PlayClipAtPoint(sound_charge, transform.position);
+                //AudioSource.PlayClipAtPoint(sound_charge, transform.position);
+                //PlayerSonarPinger.sonar(sonarPointPrefab, 600, 3);
+
             }
             else
             {

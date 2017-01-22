@@ -6,6 +6,7 @@ using UnityEngine.SceneManagement;
 
 public class DeathScreenAnimation : MonoBehaviour 
 {
+	public static bool dead = false;
 	/// <summary>
 	/// The Object you use to 
 	/// </summary>
@@ -19,7 +20,7 @@ public class DeathScreenAnimation : MonoBehaviour
 	/// <summary>
 	/// Time until we should fade in the dark overlay and reset the level
 	/// </summary>
-	public float timeUntilScreenFadeOut = 2f;
+	public float timeUntilScreenFadeOut = 0.5f;
 
 	public Image fadeOutPanel;
 
@@ -31,6 +32,8 @@ public class DeathScreenAnimation : MonoBehaviour
 	// Use this for initialization
 	void Start ()
 	{
+		dead = false;
+
 		fadeInTimer = timeUntilScreenFadeOut;
         fadeOutPanel = GameObject.FindGameObjectWithTag("Mandatory").transform.Find("Canvas/Panel").GetComponent<Image>();
     }
@@ -44,19 +47,22 @@ public class DeathScreenAnimation : MonoBehaviour
 		}
 		if (playing)
 		{
+			print ("playing");
 			if (fadeOutTimer > 0)
 			{
 				fadeOutTimer -= Time.deltaTime;
 			} else
 			{
+				print ("Fade out");
 				// Fade in overlay
-				float alpha = Mathf.Lerp(fadeOutPanel.color.a, 1, 0.03f);
+				float alpha = Mathf.Lerp(fadeOutPanel.color.a, 1, 0.3f);
 				Color c = new Color (fadeOutPanel.color.r, fadeOutPanel.color.g, fadeOutPanel.color.g, alpha);
 				fadeOutPanel.color = c;
 
 				if (alpha >= 0.95)
 				{
 					// Reset scene
+					Reset.ResetGame ();
 					SceneManager.LoadScene (SceneManager.GetActiveScene ().buildIndex);
 				}
 			}
@@ -83,10 +89,13 @@ public class DeathScreenAnimation : MonoBehaviour
 
 	public void Play()
 	{
-		scareObject.SetActive (true);
-		fadeOutTimer = timeUntilScreenFadeOut;
-		playing = true;
-		ac.SetTrigger ("attack");
-
+		if (!playing)
+		{
+			scareObject.SetActive (true);
+			fadeOutTimer = timeUntilScreenFadeOut;
+			playing = true;
+			ac.SetTrigger ("attack");
+			dead = true;
+		}
 	}
 }
