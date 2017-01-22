@@ -11,7 +11,7 @@ public class Noise
 	/* Multiplier from the noise to in game units */
 	const float NOISE_RADIUS_MULTIPLIER = 1;
 
-    const float AI_HEARING = 1.25f;
+    const float AI_HEARING = 0.8f;
 
 	/* Where the noise was made */
 	public Vector3 origin;
