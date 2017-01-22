@@ -54,7 +54,6 @@ public class Game_Controller : MonoBehaviour
 				if (!generator.isActive)
 				{
 					allActivated = false;
-					print (generator.name + " is not activated");
 				}
 			}
             if (soundGenerators.Count < 1)
