@@ -44,6 +44,8 @@ public class BotAI : MonoBehaviour {
     //public double 
 
     public AudioClip sound_screech;
+    public AudioClip sound_charge;
+    public AudioClip sound_roar;
 
     // Caches & private data. //
     private Rigidbody rigidbody;
@@ -54,6 +56,7 @@ public class BotAI : MonoBehaviour {
     private int goto_noise_key;
     public GameObject sonarPointPrefab;
     private Object_Clone clone;
+    private float time_until_next_sound;
 
 	/// <summary>
 	/// If we are waiting to move to the next position (AREA only)
@@ -65,8 +68,6 @@ public class BotAI : MonoBehaviour {
     /// </summary>
     void Start()
     {
-
-        //sonarPointPrefab.
         PlayerBotDisturber.ai_list.Add(this);
         rigidbody = GetComponent<Rigidbody>();
         agent = GetComponent<NavMeshAgent>();
@@ -129,8 +130,17 @@ public class BotAI : MonoBehaviour {
 
     }
 
+    void OnCollisionEnter(Collision coll)
+    {
+        if (coll.collider.tag == "SoundGenerator") {
+            coll.collider.GetComponent<Sound_Generator>().ineffective = true;
+        }
+    }
+
     void DoMovement()
     {
+
+
         if (temporary_idle > 0.0f) {
             temporary_idle -= Time.deltaTime;
             agent.enabled = false;
@@ -148,6 +158,15 @@ public class BotAI : MonoBehaviour {
 
         else if (goto_noise != null)
         {
+
+            float timeDiff = Time.time - goto_noise.timeStamp;
+            if (timeDiff > Noise.DECAY_AFTER)
+            {
+                heard_noises.RemoveAt(goto_noise_key);
+                goto_noise = null;
+                return;
+            }
+
             agent.speed = charge_speed;
             agent.SetDestination(heard_noises[goto_noise_key].origin);
             agent.SetDestination(goto_noise.origin);
@@ -229,8 +248,6 @@ public class BotAI : MonoBehaviour {
     void GetNewAreaDest() {
 		area_destination = new Vector3( RandomWithNegative(position_points[0].position.x, position_points[1].position.x), transform.position.y,
 										RandomWithNegative(position_points[0].position.z, position_points[1].position.z));
-		Debug.Log (area_destination);
-
     }
 
 	float RandomWithNegative(float a, float b)
@@ -263,14 +280,6 @@ public class BotAI : MonoBehaviour {
         int count = 0;
         List<int> to_remove = new List<int>();
         foreach (var noise in heard_noises) {
-
-            float timeDiff = Time.time - noise.timeStamp;
-            if (timeDiff > Noise.DECAY_AFTER)
-            {
-                to_remove.Add(count);
-                continue;
-            }
-
             float p = noise.CalcPriority(transform.position);
             if (p > latest_p)
             {
@@ -279,9 +288,7 @@ public class BotAI : MonoBehaviour {
                 latest_p = p;
                 search_time = chase_determination;
             }
-
             count++;
-
         }
         foreach (var index in to_remove) {
             heard_noises.RemoveAt(index);
@@ -318,8 +325,19 @@ public class BotAI : MonoBehaviour {
 
         DoMovement();
 
-        
-        if (goto_noise != null)
-            Debug.Log(goto_noise.origin);
+        if (time_until_next_sound <= 0) {
+            time_until_next_sound = 5f;
+            if (chasing > 0)
+            {
+                Debug.Log("I'm chasing. KEK");
+                AudioSource.PlayClipAtPoint(sound_charge, transform.position);
+            }
+            else
+            {
+                Debug.Log("Hi, I am not chasing you.");
+                AudioSource.PlayClipAtPoint(sound_roar, transform.position);
+            }
+        }
+        time_until_next_sound -= Time.deltaTime;
 	}
 }
