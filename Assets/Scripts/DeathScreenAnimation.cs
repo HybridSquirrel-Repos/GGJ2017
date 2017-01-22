@@ -32,7 +32,8 @@ public class DeathScreenAnimation : MonoBehaviour
 	void Start ()
 	{
 		fadeInTimer = timeUntilScreenFadeOut;
-	}
+        fadeOutPanel = GameObject.FindGameObjectWithTag("Mandatory").transform.Find("Canvas/Panel").GetComponent<Image>();
+    }
 	
 	// Update is called once per frame
 	void Update () 

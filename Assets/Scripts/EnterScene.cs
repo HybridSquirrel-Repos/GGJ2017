@@ -2,21 +2,19 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class EnterScene : MonoBehaviour {
 
-    // Use this for initialization
-    void Start() {
-        GetComponent<Button>().onClick = NextLevel;
+    public string to_level = "";
+
+    void Start()
+    {
+        GetComponent<Button>().onClick.AddListener(NextLevel);
     }
 
-    Button.ButtonClickedEvent NextLevel()
+    void NextLevel()
     {
-        return null;
+        SceneManager.LoadScene(to_level);
     }
-	
-	// Update is called once per frame
-	void Update () {
-		
-	}
 }
