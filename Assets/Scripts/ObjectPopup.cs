@@ -21,10 +21,6 @@ public class ObjectPopup : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
         objToHide = transform.Find("radio").gameObject;
-	}
-	
-	// Update is called once per frame
-	void Update () {
-		
+        Hide();
 	}
 }
