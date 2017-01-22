@@ -18,11 +18,16 @@ public class Sonar : MonoBehaviour {
 
 	static Text debugPointCountText;
 
+	static LayerMask ignorePlayer = new LayerMask();
+	static LayerMask alsoHitPlayer = new LayerMask();
+
 	public static int[] map;
 	// Use this for initialization
 	void Start () {
 		map = new int[MAP_SIZE_X * MAP_SIZE_Y * MAP_SIZE_Z];
 		debugPointCountText = GameObject.Find ("pointCountText").GetComponent<Text>();
+		ignorePlayer = 1;
+		alsoHitPlayer = 1 | (1 << 8);
 	}
 
 	// Update is called once per frame
@@ -33,7 +38,7 @@ public class Sonar : MonoBehaviour {
 
 	public static void ShootRay(Ray ray, GameObject sonarPointPrefab, float volume = 4){
 		RaycastHit hit;
-		if (Physics.Raycast (ray, out hit, volume)) {
+		if (Physics.Raycast (ray, out hit, volume, ignorePlayer)) {
 			//HIT OBJECT, SPAWN A SONAR POINT
 			var sonarResponder = hit.collider.gameObject.GetComponent<SonarResponder> ();
 			 if (hit.collider.tag == "Enemy")
@@ -48,12 +53,28 @@ public class Sonar : MonoBehaviour {
 			{
 				hit.collider.GetComponent <Sound_Generator> ().Show ();
 			} else if (sonarResponder != null) {
-
 				Vector3 roundedPoint = RoundVector (hit.point);
 				if (map[ListPos (roundedPoint)] >= MAX_CUBE_POINTS || pointCount > MAX_POINTS)
 				{
 					return;
 				} 
+
+				//checkVisibility
+				if (Vector3.Distance (ray.origin, Camera.main.transform.position) > 3f) {
+					//ray assumed not to originate from player or nearest vecinity, so only will be rendered if there is a straight line to the player
+					RaycastHit reverseHit;
+					Ray reverseRay = new Ray (hit.point + Vector3.up * 0.1f, (Camera.main.transform.position - hit.point).normalized);
+					//reverseRay.direction = (Camera.main.posi)
+					Physics.Raycast(reverseRay,out reverseHit, 100f, alsoHitPlayer);
+					//Debug.DrawLine (reverseRay.origin, reverseHit.point, Color.cyan, 1f);
+					if (reverseHit.transform.CompareTag ("Player") == false) {
+						//reverse ray DID NOT hit player, so he can't hear this echo
+						Debug.DrawLine (reverseRay.origin, reverseHit.point, Color.red, 10f);
+						return;
+					} else {
+						Debug.DrawLine (reverseRay.origin, reverseHit.point, Color.green, 10f);
+					}
+				}
 
 				GameObject sonarPoint = GameObject.Instantiate (sonarPointPrefab, hit.point, Quaternion.identity);
 				sonarPoint.GetComponent<SonarPointFadeIn> ().fadeInTimeout = hit.distance;
