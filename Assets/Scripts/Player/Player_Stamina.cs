@@ -24,6 +24,8 @@ public class Player_Stamina : MonoBehaviour
 
 	private float currentStamina = 0;
 
+	private float exhaustCountDown = -10;
+
 
 	// Update is called once per frame
 	void Update () 
@@ -51,7 +53,10 @@ public class Player_Stamina : MonoBehaviour
 				currentStamina = maxStamina;
 			}
 		}
-
+		if (exhaustCountDown > 0)
+		{
+			exhaustCountDown -= Time.deltaTime;
+		}
 
 	}
 
@@ -60,6 +65,16 @@ public class Player_Stamina : MonoBehaviour
 		if (currentStamina <= 0)
 		{
 			fpc.m_CanRun = false;
+			if (exhaustCountDown == -10)
+			{
+				exhaustCountDown = 3;
+			}
+		} else
+		{
+			if (exhaustCountDown <= 0)
+			{
+				fpc.m_CanRun = true;
+			}
 		}
 	}
 }
